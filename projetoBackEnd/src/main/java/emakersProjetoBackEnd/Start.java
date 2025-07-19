@@ -1,13 +1,13 @@
-package com.emakers.projetoBackEnd;
+package emakersProjetoBackEnd;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ProjetoBackEndApplication {
+public class Start {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ProjetoBackEndApplication.class, args);
+		SpringApplication.run(Start.class, args);
 	}
 
 }
