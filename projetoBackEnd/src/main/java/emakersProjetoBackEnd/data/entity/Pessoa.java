@@ -1,12 +1,15 @@
 package emakersProjetoBackEnd.data.entity;
 
+import emakersProjetoBackEnd.data.dto.request.PessoaRequestDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /*
@@ -25,7 +28,7 @@ import lombok.Setter;
 //Comandos responsáveis por criar os campos e os métodos para acessar as instâncias da classe
 @Getter
 @Setter
-
+@NoArgsConstructor
 
 @Entity
 @Table(name = "category")
@@ -52,6 +55,15 @@ public class Pessoa {
 
     @Column(name = "senha", nullable = false, length = 100)
     private String senha;
+
+    @Builder
+    public Pessoa(PessoaRequestDTO pessoaRequestDTO){
+        this.name = pessoaRequestDTO.name();
+        this.cpf = pessoaRequestDTO.cpf();
+        this.cep = pessoaRequestDTO.cep();
+        this.email = pessoaRequestDTO.email();
+        this.senha = pessoaRequestDTO.senha();
+    }
 
 
 }
