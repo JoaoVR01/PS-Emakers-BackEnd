@@ -36,7 +36,7 @@ public class Livro {
     private String name;
 
     @Column(name = "autor", nullable = false, length = 100)
-    private String situation;
+    private String autor;
 
     @Column(name = "data lançamento", nullable = false)
     private Date data_lancamento;

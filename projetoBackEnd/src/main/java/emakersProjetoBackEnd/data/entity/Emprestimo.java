@@ -12,6 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@IdClass(EmprestimoId.class)
 @Table(name = "emprestimo")
 
 public class Emprestimo {
