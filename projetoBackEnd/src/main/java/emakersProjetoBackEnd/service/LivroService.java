@@ -43,7 +43,7 @@ public class LivroService {
     //método que atualiza um livro
     public LivroResponseDTO updateLivro(LivroRequestDTO livroRequestDTO, Long idLivro){
         Livro livro = findLivro(idLivro);
-        livro.setName(livroRequestDTO.nome());
+        livro.setName(livroRequestDTO.name());
         livro.setAutor(livroRequestDTO.autor());
         livro.setData_lancamento(livroRequestDTO.data_lancamento());
         livroRepository.save(livro);

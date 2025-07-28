@@ -1,7 +1,6 @@
 package emakersProjetoBackEnd.data.entity;
 
-import java.util.Date;
-
+import java.time.LocalDate;
 import emakersProjetoBackEnd.data.dto.request.LivroRequestDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -43,12 +42,12 @@ public class Livro {
     @Column(name = "autor", nullable = false, length = 100)
     private String autor;
 
-    @Column(name = "data lançamento", nullable = false)
-    private Date data_lancamento;
+    @Column(name = "data_lançamento", nullable = false)
+    private LocalDate data_lancamento;
 
     @Builder
     public Livro(LivroRequestDTO livroRequestDTO){
-        this.name = livroRequestDTO.nome();
+        this.name = livroRequestDTO.name();
         this.autor = livroRequestDTO.autor();
         this.data_lancamento = livroRequestDTO.data_lancamento();
     }

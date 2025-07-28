@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import emakersProjetoBackEnd.data.dto.request.LivroRequestDTO;
 import emakersProjetoBackEnd.data.dto.response.LivroResponseDTO;
 import emakersProjetoBackEnd.service.LivroService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/livro") //informa que todo endpoint /livro conterá um método que modifica um livro
@@ -37,12 +39,12 @@ public class LivroController {
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<LivroResponseDTO> createLivro(LivroRequestDTO livroRequestDTO){
+    public ResponseEntity<LivroResponseDTO> createLivro(@Valid @RequestBody LivroRequestDTO livroRequestDTO){
         return ResponseEntity.status(HttpStatus.OK).body(livroService.createLivro(livroRequestDTO));
     }
 
     @PutMapping(value = "/update/{idLivro}")
-    public ResponseEntity<LivroResponseDTO> updateLivro(LivroRequestDTO livroRequestDTO, @PathVariable Long idLivro){
+    public ResponseEntity<LivroResponseDTO> updateLivro(@Valid @RequestBody LivroRequestDTO livroRequestDTO, @PathVariable Long idLivro){
         return ResponseEntity.status(HttpStatus.OK).body(livroService.updateLivro(livroRequestDTO, idLivro));
     }
 

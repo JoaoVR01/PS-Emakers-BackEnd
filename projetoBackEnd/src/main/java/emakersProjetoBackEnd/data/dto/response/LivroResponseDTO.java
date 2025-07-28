@@ -1,17 +1,17 @@
 package emakersProjetoBackEnd.data.dto.response;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import emakersProjetoBackEnd.data.entity.Livro;
 
 public record LivroResponseDTO(
     Long id,
 
-    String nome,
+    String name,
 
     String autor,
 
-    Date anoLancamento
+    LocalDate anoLancamento
 ) {
     public LivroResponseDTO(Livro livro){
         this(livro.getIdLivro(), livro.getName(), livro.getAutor(), livro.getData_lancamento());

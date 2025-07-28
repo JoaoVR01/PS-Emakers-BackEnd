@@ -1,19 +1,19 @@
 package emakersProjetoBackEnd.data.dto.request;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.validation.constraints.NotBlank;
 
 public record LivroRequestDTO(
 
     @NotBlank(message = "Title is required")
-    String nome,
+    String name,
 
     @NotBlank(message = "Autor is required")
     String autor,
 
     @NotBlank(message = "release date is required")
-    Date data_lancamento
+    LocalDate data_lancamento
 ) {
     
 }

@@ -31,7 +31,7 @@ import lombok.Setter;
 @NoArgsConstructor
 
 @Entity
-@Table(name = "category")
+@Table(name = "pessoa")
 public class Pessoa {
     //CRIAÇÃO DOS CAMPOS DA TABELA DO BANCO DE DADOS
 
