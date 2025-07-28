@@ -1,11 +1,13 @@
 package emakersProjetoBackEnd.data.entity;
 
+import emakersProjetoBackEnd.data.dto.request.EmprestimoRequestDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,5 +38,11 @@ public class Emprestimo {
     @ManyToOne
     @JoinColumn(name = "idLivro")
     private Livro livro;
+
+    @Builder
+    public Emprestimo(EmprestimoRequestDTO emprestimoRequestDTO){
+        this.livro = emprestimoRequestDTO.idLivro();
+        this.pessoa = emprestimoRequestDTO.idPessoa();
+    }
 
 }
