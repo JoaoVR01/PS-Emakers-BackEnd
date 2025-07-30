@@ -1,5 +1,12 @@
 package emakersProjetoBackEnd.data.dto.request;
 
-public record EmprestimoRequestDTO() {
+import emakersProjetoBackEnd.data.entity.Livro;
+import emakersProjetoBackEnd.data.entity.Pessoa;
+
+public record EmprestimoRequestDTO(
+    Pessoa pessoa,
+
+    Livro livro
+) {
 
 }
