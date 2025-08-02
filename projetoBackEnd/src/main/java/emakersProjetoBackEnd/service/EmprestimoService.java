@@ -67,4 +67,21 @@ public class EmprestimoService {
     }
 
     //método de devolução
+    public EmprestimoResponseDTO devolver(EmprestimoRequestDTO emprestimoRequestDTO){
+        Livro livro = livroRepository.findByName(emprestimoRequestDTO.livro().getName());
+
+        boolean status = emprestimoRepository.existsByLivroAndStatusTrue(livro);
+
+        if(status){
+            Emprestimo emprestimo = emprestimoRepository.findByLivroAndStatusTrue(livro);
+            emprestimo.setDataDevolucao(LocalDate.now());
+            emprestimo.setStatus(false);
+            emprestimoRepository.save(emprestimo);
+
+            return new EmprestimoResponseDTO(emprestimo);
+        }else{
+            throw new RuntimeException("Empréstimo não encontrado");
+        }
+        
+    }
 }

@@ -36,4 +36,9 @@ public class EmprestimoController {
     public ResponseEntity<EmprestimoResponseDTO> emprestar(@RequestBody EmprestimoRequestDTO emprestimoRequestDTO){
         return ResponseEntity.status(HttpStatus.OK).body(emprestimoService.emprestar(emprestimoRequestDTO));
     }
+
+    @PostMapping("/devolver")
+    public ResponseEntity<EmprestimoResponseDTO> devolver(@RequestBody EmprestimoRequestDTO emprestimoRequestDTO){
+        return ResponseEntity.status(HttpStatus.OK).body(emprestimoService.devolver(emprestimoRequestDTO));
+    }
 }
