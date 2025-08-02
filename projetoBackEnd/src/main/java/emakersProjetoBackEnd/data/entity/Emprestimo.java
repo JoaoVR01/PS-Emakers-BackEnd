@@ -1,6 +1,9 @@
 package emakersProjetoBackEnd.data.entity;
 
+import java.time.LocalDate;
+
 import emakersProjetoBackEnd.data.dto.request.EmprestimoRequestDTO;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,30 +24,32 @@ import lombok.Setter;
 
 public class Emprestimo {
 
-   //para criar uma tabela sem id, é necessário criar uma chave primaria composta, para isso é preciso criar uma classe auxiliar
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idEmprestimo;
 
-    /*
-     * Relacionamento com Pessoa.
-     */
+    /*Relacionamento com Pessoa. */
     @ManyToOne
-    @JoinColumn(name = "Pessoa")
+    @JoinColumn(name = "id_pessoa")
     private Pessoa pessoa;
 
-
-    /*
-     * Relacionamento com Livro.
-     */
+    /*Relacionamento com Livro.*/
     @ManyToOne
-    @JoinColumn(name = "Livro")
+    @JoinColumn(name = "id_livro")
     private Livro livro;
+
+    @Column(name = "DataEmprestimo")
+    private LocalDate dataEmprestimo;
+
+    @Column(name = "DataDevolucao")
+    private LocalDate dataDevolucao;
+
+    @Column(name = "Status")
+    private boolean status;
 
     @Builder
     public Emprestimo(EmprestimoRequestDTO emprestimoRequestDTO){
         this.livro = emprestimoRequestDTO.livro();
-        this.pessoa = emprestimoRequestDTO.pessoa();
     }
 
 }
