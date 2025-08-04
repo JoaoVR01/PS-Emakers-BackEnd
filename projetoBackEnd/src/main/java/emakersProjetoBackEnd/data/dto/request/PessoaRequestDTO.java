@@ -11,7 +11,7 @@ public record PessoaRequestDTO(
     @Pattern(regexp = "^\\d{11}$", message = "O CPF deve conter exatamente 11 dígitos numéricos.")
     String cpf,
 
-    @Pattern(regexp = 	"^\\d{5}-\\d{3}$", message = "o CEP deve estar no formato 11111-111")
+    @Pattern(regexp = 	"^\\d{8}$", message = "o CEP deve estar no formato 11111-111")
     String cep,
 
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "Email no formato inválido")

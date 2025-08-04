@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import emakersProjetoBackEnd.data.dto.request.LoginRequestDTO;
 import emakersProjetoBackEnd.data.dto.request.PessoaRequestDTO;
+import emakersProjetoBackEnd.data.dto.response.CepResponseDTO;
 import emakersProjetoBackEnd.data.dto.response.LoginResponseDTO;
 import emakersProjetoBackEnd.data.entity.Pessoa;
 import emakersProjetoBackEnd.repository.PessoaRepository;
+import emakersProjetoBackEnd.service.CepService;
 import emakersProjetoBackEnd.service.TokenService;
 import jakarta.validation.Valid;
 
@@ -29,6 +31,9 @@ public class AuthenticationController {
 
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private CepService cepService;
 
     //endpoint de login
     @SuppressWarnings("rawtypes")
@@ -50,8 +55,18 @@ public class AuthenticationController {
             return ResponseEntity.badRequest().build();
         }else{
             Pessoa novaPessoa = new Pessoa(pessoaRequestDTO);
+
             String encryptedPassword = new BCryptPasswordEncoder().encode(pessoaRequestDTO.senha());
             novaPessoa.setSenha(encryptedPassword);
+
+            CepResponseDTO cepResponseDTO = cepService.consultaCep(novaPessoa.getCep());
+
+            novaPessoa.setLogradouro(cepResponseDTO.logradouro());
+            novaPessoa.setBairro(cepResponseDTO.bairro());
+            novaPessoa.setComplemento(cepResponseDTO.complemento());
+            novaPessoa.setUf(cepResponseDTO.uf());
+            novaPessoa.setLocalidade(cepResponseDTO.localidade());
+
             pessoaRepository.save(novaPessoa);
             return ResponseEntity.ok().build();
         }

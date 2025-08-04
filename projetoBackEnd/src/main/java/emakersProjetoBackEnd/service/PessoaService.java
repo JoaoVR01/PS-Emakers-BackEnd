@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import emakersProjetoBackEnd.data.dto.request.PessoaRequestDTO;
+import emakersProjetoBackEnd.data.dto.response.CepResponseDTO;
 import emakersProjetoBackEnd.data.dto.response.PessoaResponseDTO;
 import emakersProjetoBackEnd.data.entity.Pessoa;
 import emakersProjetoBackEnd.repository.PessoaRepository;
@@ -16,6 +17,10 @@ public class PessoaService {
 
     @Autowired
     private PessoaRepository pessoaRepository;
+
+    @Autowired
+    private CepService cepService;
+
 
     //método que retorna todas as pessoas
     public List<PessoaResponseDTO> getAllPessoas(){
@@ -33,6 +38,13 @@ public class PessoaService {
     //método qeu adiciona uma nova pessoa
     public PessoaResponseDTO createPessoa(PessoaRequestDTO pessoaRequestDTO){
         Pessoa pessoa = new Pessoa(pessoaRequestDTO);
+
+        CepResponseDTO cepResponseDTO = cepService.consultaCep(pessoa.getCep());
+        pessoa.setLogradouro(cepResponseDTO.logradouro());
+        pessoa.setBairro(cepResponseDTO.bairro());
+        pessoa.setComplemento(cepResponseDTO.complemento());
+        pessoa.setUf(cepResponseDTO.uf());
+        pessoa.setLocalidade(cepResponseDTO.localidade());
         pessoaRepository.save(pessoa);
         return new PessoaResponseDTO(pessoa);
     }
