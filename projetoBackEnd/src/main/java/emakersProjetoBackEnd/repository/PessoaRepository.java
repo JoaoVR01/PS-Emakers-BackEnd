@@ -7,4 +7,6 @@ import emakersProjetoBackEnd.data.entity.Pessoa;
 @Repository
 public interface PessoaRepository extends JpaRepository<Pessoa, Long>{
     Pessoa findByEmail(String email);
+
+    Pessoa findByCpf(String cpf);
 }

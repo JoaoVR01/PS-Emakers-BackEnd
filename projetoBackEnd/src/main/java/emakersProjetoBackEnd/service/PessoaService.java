@@ -4,13 +4,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import emakersProjetoBackEnd.data.dto.request.PessoaRequestDTO;
 import emakersProjetoBackEnd.data.dto.response.CepResponseDTO;
 import emakersProjetoBackEnd.data.dto.response.PessoaResponseDTO;
 import emakersProjetoBackEnd.data.entity.Pessoa;
+import emakersProjetoBackEnd.exceptions.authentication.InvalidRegisterException;
+import emakersProjetoBackEnd.exceptions.general.EntityNotFoundException;
 import emakersProjetoBackEnd.repository.PessoaRepository;
+
 
 @Service
 public class PessoaService {
@@ -37,26 +41,47 @@ public class PessoaService {
 
     //método qeu adiciona uma nova pessoa
     public PessoaResponseDTO createPessoa(PessoaRequestDTO pessoaRequestDTO){
-        Pessoa pessoa = new Pessoa(pessoaRequestDTO);
+        if(pessoaRepository.findByEmail(pessoaRequestDTO.email()) != null ){
+            throw new InvalidRegisterException();
+        }else{
+            Pessoa pessoa = new Pessoa(pessoaRequestDTO);
 
-        CepResponseDTO cepResponseDTO = cepService.consultaCep(pessoa.getCep());
-        pessoa.setLogradouro(cepResponseDTO.logradouro());
-        pessoa.setBairro(cepResponseDTO.bairro());
-        pessoa.setComplemento(cepResponseDTO.complemento());
-        pessoa.setUf(cepResponseDTO.uf());
-        pessoa.setLocalidade(cepResponseDTO.localidade());
-        pessoaRepository.save(pessoa);
-        return new PessoaResponseDTO(pessoa);
+            String encryptedPassword = new BCryptPasswordEncoder().encode(pessoaRequestDTO.senha());
+            pessoa.setSenha(encryptedPassword);
+
+            CepResponseDTO cepResponseDTO = cepService.consultaCep(pessoa.getCep());
+            pessoa.setLogradouro(cepResponseDTO.logradouro());
+            pessoa.setBairro(cepResponseDTO.bairro());
+            pessoa.setComplemento(cepResponseDTO.complemento());
+            pessoa.setUf(cepResponseDTO.uf());
+            pessoa.setLocalidade(cepResponseDTO.localidade());
+            pessoaRepository.save(pessoa);
+            return new PessoaResponseDTO(pessoa);
+        }
     }
 
     //método que atualiza as informações de uma pessoa
     public PessoaResponseDTO updatePessoa(PessoaRequestDTO pessoaRequestDTO, Long idPessoa){
         Pessoa pessoa = findPessoa(idPessoa);
+
+
         pessoa.setName(pessoaRequestDTO.name());
         pessoa.setCpf(pessoaRequestDTO.cpf());
+
         pessoa.setCep(pessoaRequestDTO.cep());
+        CepResponseDTO cepResponseDTO = cepService.consultaCep(pessoa.getCep());
+        pessoa.setLogradouro(cepResponseDTO.logradouro());
+        pessoa.setBairro(cepResponseDTO.bairro());
+        pessoa.setComplemento(cepResponseDTO.complemento());
+        pessoa.setUf(cepResponseDTO.uf());            
+        pessoa.setLocalidade(cepResponseDTO.localidade());
+
         pessoa.setEmail(pessoaRequestDTO.email());
+
         pessoa.setSenha(pessoaRequestDTO.senha());
+        String encryptedPassword = new BCryptPasswordEncoder().encode(pessoaRequestDTO.senha());
+        pessoa.setSenha(encryptedPassword);
+
         pessoaRepository.save(pessoa);
 
         return new PessoaResponseDTO(pessoa);
@@ -70,6 +95,6 @@ public class PessoaService {
     }
 
     private Pessoa findPessoa(Long idPessoa){
-        return pessoaRepository.findById(idPessoa).orElseThrow(() -> new RuntimeException("Pessoa not found"));
+        return pessoaRepository.findById(idPessoa).orElseThrow(() -> new EntityNotFoundException(idPessoa));
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import emakersProjetoBackEnd.data.dto.request.LivroRequestDTO;
 import emakersProjetoBackEnd.data.dto.response.LivroResponseDTO;
 import emakersProjetoBackEnd.data.entity.Livro;
+import emakersProjetoBackEnd.exceptions.general.EntityNotFoundException;
 import emakersProjetoBackEnd.repository.LivroRepository;
 
 @Service
@@ -60,7 +61,7 @@ public class LivroService {
     }
 
     private Livro findLivro(Long idLivro){
-        return livroRepository.findById(idLivro).orElseThrow(() -> new RuntimeException("Book not found"));
+        return livroRepository.findById(idLivro).orElseThrow(() -> new EntityNotFoundException(idLivro));
     }
 
 }

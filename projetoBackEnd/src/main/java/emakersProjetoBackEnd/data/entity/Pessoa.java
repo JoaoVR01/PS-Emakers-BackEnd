@@ -49,7 +49,7 @@ public class Pessoa implements UserDetails{ //indica que essa classe será usada
     @Column(name = "name",  nullable = false, length = 100) //definir que o campo name será uma coluna da tabela z
     private String name;
 
-    @Column(name = "cpf", nullable = false, length = 11)
+    @Column(name = "cpf", nullable = false, length = 11, unique = true)
     private String cpf;
 
     @Column(name = "cep", nullable = false, length = 9)

@@ -13,6 +13,9 @@ import emakersProjetoBackEnd.data.dto.response.EmprestimoResponseDTO;
 import emakersProjetoBackEnd.data.entity.Emprestimo;
 import emakersProjetoBackEnd.data.entity.Livro;
 import emakersProjetoBackEnd.data.entity.Pessoa;
+import emakersProjetoBackEnd.exceptions.emprestimo.DevolucaoInvalidaException;
+import emakersProjetoBackEnd.exceptions.emprestimo.LivroEmprestadoException;
+import emakersProjetoBackEnd.exceptions.general.EntityNotFoundException;
 import emakersProjetoBackEnd.repository.EmprestimoRepository;
 import emakersProjetoBackEnd.repository.LivroRepository;
 import emakersProjetoBackEnd.repository.PessoaRepository;
@@ -53,7 +56,7 @@ public class EmprestimoService {
         boolean status = emprestimoRepository.existsByLivroAndStatusTrue(livro);
 
         if(status){
-            throw new RuntimeException("Livro já está emprestado!");
+            throw new LivroEmprestadoException(livro.getName());
        }else{
             Emprestimo emprestimo = new Emprestimo();
             emprestimo.setLivro(livro);
@@ -69,6 +72,9 @@ public class EmprestimoService {
     //método de devolução
     public EmprestimoResponseDTO devolver(EmprestimoRequestDTO emprestimoRequestDTO){
         Livro livro = livroRepository.findByName(emprestimoRequestDTO.livro().getName());
+        if(livro == null){
+            throw new EntityNotFoundException(null);
+        }
 
         boolean status = emprestimoRepository.existsByLivroAndStatusTrue(livro);
 
@@ -80,7 +86,9 @@ public class EmprestimoService {
 
             return new EmprestimoResponseDTO(emprestimo);
         }else{
-            throw new RuntimeException("Empréstimo não encontrado");
+             var authentication = SecurityContextHolder.getContext().getAuthentication();
+            String email = authentication.getName();
+            throw new DevolucaoInvalidaException(livro.getName(), email);
         }
         
     }

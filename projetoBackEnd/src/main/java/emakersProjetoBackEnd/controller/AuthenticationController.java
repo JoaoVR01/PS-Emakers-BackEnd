@@ -14,6 +14,7 @@ import emakersProjetoBackEnd.data.dto.request.PessoaRequestDTO;
 import emakersProjetoBackEnd.data.dto.response.CepResponseDTO;
 import emakersProjetoBackEnd.data.dto.response.LoginResponseDTO;
 import emakersProjetoBackEnd.data.entity.Pessoa;
+import emakersProjetoBackEnd.exceptions.authentication.InvalidRegisterException;
 import emakersProjetoBackEnd.repository.PessoaRepository;
 import emakersProjetoBackEnd.service.CepService;
 import emakersProjetoBackEnd.service.TokenService;
@@ -38,12 +39,12 @@ public class AuthenticationController {
     //endpoint de login
     @SuppressWarnings("rawtypes")
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid LoginRequestDTO loginRequestDTO){
+    public ResponseEntity login(@RequestBody @Valid LoginRequestDTO loginRequestDTO) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(loginRequestDTO.email(), loginRequestDTO.senha());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
         var token = tokenService.generateToken((Pessoa) auth.getPrincipal());
-
+        
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
@@ -51,8 +52,8 @@ public class AuthenticationController {
     @SuppressWarnings("rawtypes")
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid PessoaRequestDTO pessoaRequestDTO){
-        if(pessoaRepository.findByEmail(pessoaRequestDTO.email()) != null ){
-            return ResponseEntity.badRequest().build();
+        if(pessoaRepository.findByEmail(pessoaRequestDTO.email()) != null || pessoaRepository.findByCpf(pessoaRequestDTO.cpf()) != null){
+            throw new InvalidRegisterException();
         }else{
             Pessoa novaPessoa = new Pessoa(pessoaRequestDTO);
 

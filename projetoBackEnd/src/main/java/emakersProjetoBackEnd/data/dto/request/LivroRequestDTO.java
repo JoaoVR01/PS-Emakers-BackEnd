@@ -13,7 +13,7 @@ public record LivroRequestDTO(
     @NotBlank(message = "Autor is required")
     String autor,
 
-    @NotNull(message = "release date is required")
+    @NotNull(message = "Eelease date is required")
     LocalDate data_lancamento
 ) {
     
