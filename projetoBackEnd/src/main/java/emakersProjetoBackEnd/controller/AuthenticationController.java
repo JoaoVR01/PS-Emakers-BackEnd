@@ -1,5 +1,4 @@
 package emakersProjetoBackEnd.controller;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,6 +13,7 @@ import emakersProjetoBackEnd.data.dto.request.PessoaRequestDTO;
 import emakersProjetoBackEnd.data.dto.response.CepResponseDTO;
 import emakersProjetoBackEnd.data.dto.response.LoginResponseDTO;
 import emakersProjetoBackEnd.data.entity.Pessoa;
+import emakersProjetoBackEnd.exceptions.authentication.InvalidLoginException;
 import emakersProjetoBackEnd.exceptions.authentication.InvalidRegisterException;
 import emakersProjetoBackEnd.repository.PessoaRepository;
 import emakersProjetoBackEnd.service.CepService;
@@ -44,8 +44,12 @@ public class AuthenticationController {
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
         var token = tokenService.generateToken((Pessoa) auth.getPrincipal());
+        try {
+            return ResponseEntity.ok(new LoginResponseDTO(token));
+        } catch (Exception e) {
+            throw new InvalidLoginException();
+        }
         
-        return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
 
