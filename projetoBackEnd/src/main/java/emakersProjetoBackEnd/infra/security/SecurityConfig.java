@@ -29,20 +29,28 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
+        //método que desabilita a proteção contra ataques de Falsificação de Solicitações entre Sites (CSRF) em uma aplicação web
             .csrf(csrf -> csrf.disable())
+            //Configura a política de sessão como STATELESS → não guarda estado no servidor (típico de APIs REST com JWT)
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
+                //delimita qual nivel de autenticação para cada endpoint
                 .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                 .requestMatchers("/swagger-ui/**").permitAll()
                 .requestMatchers("/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated()
             )
+            //retorna os dados do usuario e permite que o spring Security acesse esses dados
             .userDetailsService(authorizationService)
+
+            //adiciona o filtro de verificação de token
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
     }
 
+
+    //Fornece as configurações de autenticação para outros lugares do código
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();

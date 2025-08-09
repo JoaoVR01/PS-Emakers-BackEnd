@@ -48,13 +48,19 @@ public class EmprestimoService {
     public EmprestimoResponseDTO emprestar(EmprestimoRequestDTO emprestimoRequestDTO){
         Livro livro = livroRepository.findByName(emprestimoRequestDTO.livro().getName());
 
+        if(livro == null){
+            throw new EntityNotFoundException(null);
+        }
+
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
 
         Pessoa pessoa = pessoaRepository.findByEmail(email);
 
+        //verifica se existe o livro e se existe algum emprestimo com o status true
         boolean status = emprestimoRepository.existsByLivroAndStatusTrue(livro);
 
+        //só empresta se o status estiver false
         if(status){
             throw new LivroEmprestadoException(livro.getName());
        }else{
@@ -76,6 +82,7 @@ public class EmprestimoService {
             throw new EntityNotFoundException(null);
         }
 
+        //altera o status e adiciona a data de devolução
         boolean status = emprestimoRepository.existsByLivroAndStatusTrue(livro);
 
         if(status){
