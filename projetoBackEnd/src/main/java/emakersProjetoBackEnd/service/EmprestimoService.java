@@ -46,18 +46,11 @@ public class EmprestimoService {
 
     //método de emprestar
     public EmprestimoResponseDTO emprestar(EmprestimoRequestDTO emprestimoRequestDTO){
-        Livro livro = livroRepository.findByName(emprestimoRequestDTO.livro().getName());
+        Livro livro = findLivroById(emprestimoRequestDTO);
 
-        if(livro == null){
-            throw new EntityNotFoundException(null);
-        }
+        Pessoa pessoa = pessoaData();
 
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-
-        Pessoa pessoa = pessoaRepository.findByEmail(email);
-
-        //verifica se existe o livro e se existe algum emprestimo com o status true
+        //verifica se existe algum emprestimo com o status true daquele livro
         boolean status = emprestimoRepository.existsByLivroAndStatusTrue(livro);
 
         //só empresta se o status estiver false
@@ -77,26 +70,40 @@ public class EmprestimoService {
 
     //método de devolução
     public EmprestimoResponseDTO devolver(EmprestimoRequestDTO emprestimoRequestDTO){
-        Livro livro = livroRepository.findByName(emprestimoRequestDTO.livro().getName());
-        if(livro == null){
-            throw new EntityNotFoundException(null);
-        }
+        
+        Livro livro = findLivroById(emprestimoRequestDTO);
 
-        //altera o status e adiciona a data de devolução
-        boolean status = emprestimoRepository.existsByLivroAndStatusTrue(livro);
+        Pessoa pessoa = pessoaData();
+
+        boolean status = emprestimoRepository.existsByPessoaAndLivroAndStatusTrue(pessoa, livro);
+
 
         if(status){
-            Emprestimo emprestimo = emprestimoRepository.findByLivroAndStatusTrue(livro);
+            Emprestimo emprestimo = emprestimoRepository.findByLivroAndPessoaAndStatusTrue(livro, pessoa);
             emprestimo.setDataDevolucao(LocalDate.now());
             emprestimo.setStatus(false);
             emprestimoRepository.save(emprestimo);
 
             return new EmprestimoResponseDTO(emprestimo);
         }else{
-             var authentication = SecurityContextHolder.getContext().getAuthentication();
-            String email = authentication.getName();
+            String email = pessoa.getEmail();
             throw new DevolucaoInvalidaException(livro.getName(), email);
         }
         
+    }
+
+    //metodo para encontra um livro por id a partir do emprestimoRequestDTO
+    private Livro findLivroById(EmprestimoRequestDTO emprestimoRequestDTO){
+        return livroRepository.findById(emprestimoRequestDTO
+                                                .livro()
+                                                .getIdLivro())
+                                                .orElseThrow(() -> new EntityNotFoundException(emprestimoRequestDTO.livro().getIdLivro()));
+    }
+
+    //metodo para pegar os dados da pessoa logada
+    private Pessoa pessoaData(){
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        return pessoaRepository.findByEmail(email);
     }
 }

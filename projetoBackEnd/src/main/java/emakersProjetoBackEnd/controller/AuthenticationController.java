@@ -40,13 +40,14 @@ public class AuthenticationController {
     @SuppressWarnings("rawtypes")
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid LoginRequestDTO loginRequestDTO) {
-        var usernamePassword = new UsernamePasswordAuthenticationToken(loginRequestDTO.email(), loginRequestDTO.senha());
-        var auth = this.authenticationManager.authenticate(usernamePassword);
-
-        var token = tokenService.generateToken((Pessoa) auth.getPrincipal());
+        
         try {
+            var usernamePassword = new UsernamePasswordAuthenticationToken(loginRequestDTO.email(), loginRequestDTO.senha());
+            var auth = this.authenticationManager.authenticate(usernamePassword);
+
+            var token = tokenService.generateToken((Pessoa) auth.getPrincipal());
             return ResponseEntity.ok(new LoginResponseDTO(token));
-        } catch (Exception e) {
+        } catch (InvalidLoginException invalidLoginException) {
             throw new InvalidLoginException();
         }
         
