@@ -13,6 +13,7 @@ import emakersProjetoBackEnd.data.dto.request.PessoaRequestDTO;
 import emakersProjetoBackEnd.data.dto.response.CepResponseDTO;
 import emakersProjetoBackEnd.data.dto.response.LoginResponseDTO;
 import emakersProjetoBackEnd.data.entity.Pessoa;
+import emakersProjetoBackEnd.data.entity.Roles;
 import emakersProjetoBackEnd.exceptions.authentication.InvalidLoginException;
 import emakersProjetoBackEnd.exceptions.authentication.InvalidRegisterException;
 import emakersProjetoBackEnd.repository.PessoaRepository;
@@ -90,6 +91,8 @@ public class AuthenticationController {
             novaPessoa.setComplemento(cepResponseDTO.complemento());
             novaPessoa.setUf(cepResponseDTO.uf());
             novaPessoa.setLocalidade(cepResponseDTO.localidade());
+
+            novaPessoa.setRole(Roles.USER);
 
             pessoaRepository.save(novaPessoa);
             return ResponseEntity.ok().build();

@@ -1,6 +1,7 @@
 package emakersProjetoBackEnd.data.dto.response;
 
 import emakersProjetoBackEnd.data.entity.Pessoa;
+import emakersProjetoBackEnd.data.entity.Roles;
 
 public record PessoaResponseDTO(
     Long id,
@@ -23,7 +24,9 @@ public record PessoaResponseDTO(
 
     String email,
 
-    String senha
+    String senha,
+
+    Roles role
 ) {
     public PessoaResponseDTO(Pessoa pessoa){
         this(
@@ -37,7 +40,8 @@ public record PessoaResponseDTO(
             pessoa.getLocalidade(),
             pessoa.getUf(),
             pessoa.getEmail(), 
-            pessoa.getSenha()
+            pessoa.getSenha(),
+            pessoa.getRole()
             );
     }
 }

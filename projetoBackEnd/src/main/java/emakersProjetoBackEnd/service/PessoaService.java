@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import emakersProjetoBackEnd.data.dto.request.AdminPessoaRequestDTO;
 import emakersProjetoBackEnd.data.dto.request.PessoaRequestDTO;
 import emakersProjetoBackEnd.data.dto.response.CepResponseDTO;
 import emakersProjetoBackEnd.data.dto.response.PessoaResponseDTO;
@@ -40,13 +41,16 @@ public class PessoaService {
     }
 
     //método qeu adiciona uma nova pessoa
-    public PessoaResponseDTO createPessoa(PessoaRequestDTO pessoaRequestDTO){
+    public PessoaResponseDTO createPessoa(AdminPessoaRequestDTO pessoaRequestDTO){
         if(pessoaRepository.findByEmail(pessoaRequestDTO.email()) != null ){
             throw new InvalidRegisterException();
         }else{
             Pessoa pessoa = new Pessoa(pessoaRequestDTO);
+            
+            //senha padrão
 
-            String encryptedPassword = new BCryptPasswordEncoder().encode(pessoaRequestDTO.senha());
+            pessoa.setSenha("111");
+            String encryptedPassword = new BCryptPasswordEncoder().encode(pessoa.getSenha());
             pessoa.setSenha(encryptedPassword);
 
             CepResponseDTO cepResponseDTO = cepService.consultaCep(pessoa.getCep());

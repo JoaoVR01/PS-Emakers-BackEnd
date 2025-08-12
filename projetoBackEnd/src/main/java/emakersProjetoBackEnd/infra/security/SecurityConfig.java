@@ -39,7 +39,10 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                 .requestMatchers("/swagger-ui/**").permitAll()
                 .requestMatchers("/v3/api-docs/**").permitAll()
-                .anyRequest().authenticated()
+                .requestMatchers("/livro/**").hasRole("ADMIN")
+                .requestMatchers("/pessoa/**").permitAll()
+                .requestMatchers(HttpMethod.POST,"/emprestimo/**").hasRole("USER")
+                .requestMatchers(HttpMethod.GET,"/emprestimo/**").hasRole("ADMIN")
             )
             //retorna os dados do usuario e permite que o spring Security acesse esses dados
             .userDetailsService(authorizationService)

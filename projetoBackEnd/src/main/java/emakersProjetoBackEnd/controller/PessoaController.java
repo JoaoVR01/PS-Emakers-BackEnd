@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import emakersProjetoBackEnd.data.dto.request.AdminPessoaRequestDTO;
 import emakersProjetoBackEnd.data.dto.request.PessoaRequestDTO;
 import emakersProjetoBackEnd.data.dto.response.PessoaResponseDTO;
 import emakersProjetoBackEnd.service.PessoaService;
@@ -71,7 +72,7 @@ public class PessoaController {
     @PostMapping(value = "/create")
     public ResponseEntity<PessoaResponseDTO> createLivro(
         @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados da pessoa", required = true)
-        @Valid @RequestBody PessoaRequestDTO pessoaRequestDTO) {
+        @Valid @RequestBody AdminPessoaRequestDTO pessoaRequestDTO) {
 
         return ResponseEntity.status(HttpStatus.OK).body(pessoaService.createPessoa(pessoaRequestDTO));
     }

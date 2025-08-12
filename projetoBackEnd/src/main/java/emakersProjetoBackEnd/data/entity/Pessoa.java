@@ -3,10 +3,15 @@ package emakersProjetoBackEnd.data.entity;
 import java.util.Collection;
 import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import emakersProjetoBackEnd.data.dto.request.AdminPessoaRequestDTO;
 import emakersProjetoBackEnd.data.dto.request.PessoaRequestDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -76,6 +81,10 @@ public class Pessoa implements UserDetails{ //indica que essa classe será usada
     @Column(name = "senha", nullable = false, length = 100)
     private String senha;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Roles role;
+
     @Builder
     public Pessoa(PessoaRequestDTO pessoaRequestDTO){
         this.name = pessoaRequestDTO.name();
@@ -85,10 +94,20 @@ public class Pessoa implements UserDetails{ //indica que essa classe será usada
         this.senha = pessoaRequestDTO.senha();
     }
 
+    @Builder
+    public Pessoa(AdminPessoaRequestDTO adminPessoaRequestDTO) {
+        this.name = adminPessoaRequestDTO.name();
+        this.cpf = adminPessoaRequestDTO.cpf();
+        this.cep = adminPessoaRequestDTO.cep();
+        this.email = adminPessoaRequestDTO.email();
+        this.role = adminPessoaRequestDTO.role();
+    }
+
     //métodos padrão do UserDetails
       @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(); // ou Roles se você quiser implementar
+        if(this.role == Roles.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
