@@ -18,10 +18,15 @@ import emakersProjetoBackEnd.exceptions.authentication.InvalidRegisterException;
 import emakersProjetoBackEnd.repository.PessoaRepository;
 import emakersProjetoBackEnd.service.CepService;
 import emakersProjetoBackEnd.service.TokenService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
+@Tag(name = "Login & Registro", description = "Endpoints relacionados à gestão de logins e registros.")
 public class AuthenticationController {
 
     @Autowired
@@ -37,26 +42,39 @@ public class AuthenticationController {
     private CepService cepService;
 
     //endpoint de login
-    @SuppressWarnings("rawtypes")
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid LoginRequestDTO loginRequestDTO) {
-        
-        try {
+    @Operation(summary = "Faz o login de um usuário")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Login efetuado com sucesso"),
+        @ApiResponse(responseCode = "401", description = "Email ou senha inválidos"),
+        @ApiResponse(responseCode = "400", description = "Email ou senha fora das expressões regulares")
+    })
+    public ResponseEntity<LoginResponseDTO> login(
+        @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Email e Senha", required = true)
+        @RequestBody @Valid LoginRequestDTO loginRequestDTO) {
+        try{
             var usernamePassword = new UsernamePasswordAuthenticationToken(loginRequestDTO.email(), loginRequestDTO.senha());
             var auth = this.authenticationManager.authenticate(usernamePassword);
 
             var token = tokenService.generateToken((Pessoa) auth.getPrincipal());
             return ResponseEntity.ok(new LoginResponseDTO(token));
-        } catch (InvalidLoginException invalidLoginException) {
+            
+        }catch(Exception exception){
             throw new InvalidLoginException();
         }
-        
     }
 
-
-    @SuppressWarnings("rawtypes")
+    @Operation(summary = "Faz o registro de um usuário")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Registro efetuado com sucesso"),
+        @ApiResponse(responseCode = "409", description = "Email ou CPF ja encontrado no banco de dados"),
+        @ApiResponse(responseCode = "400", description = "Dados fora das exprssões regulares")
+    })
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid PessoaRequestDTO pessoaRequestDTO){
+    public ResponseEntity<Void> register(
+        @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do Usuário", required = true)
+        @RequestBody @Valid PessoaRequestDTO pessoaRequestDTO) { 
+
         if(pessoaRepository.findByEmail(pessoaRequestDTO.email()) != null || pessoaRepository.findByCpf(pessoaRequestDTO.cpf()) != null){
             throw new InvalidRegisterException();
         }else{
