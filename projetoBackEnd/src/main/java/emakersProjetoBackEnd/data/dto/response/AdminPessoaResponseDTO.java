@@ -1,13 +1,13 @@
 package emakersProjetoBackEnd.data.dto.response;
 
-//informações que o usuário consegue ver
 import emakersProjetoBackEnd.data.entity.Pessoa;
-public record PessoaResponseDTO(
+import emakersProjetoBackEnd.data.entity.Roles;
+
+//informações que só o ADMIN consegue ver
+public record AdminPessoaResponseDTO(
     Long id,
 
     String nome,
-
-    String email,
 
     String cpf,
 
@@ -21,10 +21,15 @@ public record PessoaResponseDTO(
 
     String localidade,
 
-    String uf
+    String uf,
 
+    String email,
+
+    String senha,
+
+    Roles role
 ) {
-    public PessoaResponseDTO(Pessoa pessoa){
+    public AdminPessoaResponseDTO(Pessoa pessoa){
         this(
             pessoa.getIdPessoa(), 
             pessoa.getName(), 
@@ -35,8 +40,9 @@ public record PessoaResponseDTO(
             pessoa.getBairro(),
             pessoa.getLocalidade(),
             pessoa.getUf(),
-            pessoa.getEmail()
-
+            pessoa.getEmail(), 
+            pessoa.getSenha(),
+            pessoa.getRole()
             );
     }
 }

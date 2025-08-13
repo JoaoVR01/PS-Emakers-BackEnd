@@ -8,9 +8,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import emakersProjetoBackEnd.data.dto.request.AdminPessoaRequestDTO;
-import emakersProjetoBackEnd.data.dto.request.PessoaRequestDTO;
 import emakersProjetoBackEnd.data.dto.response.CepResponseDTO;
-import emakersProjetoBackEnd.data.dto.response.PessoaResponseDTO;
+import emakersProjetoBackEnd.data.dto.response.AdminPessoaResponseDTO;
 import emakersProjetoBackEnd.data.entity.Pessoa;
 import emakersProjetoBackEnd.exceptions.authentication.InvalidRegisterException;
 import emakersProjetoBackEnd.exceptions.general.EntityNotFoundException;
@@ -28,24 +27,24 @@ public class PessoaService {
 
 
     //método que retorna todas as pessoas
-    public List<PessoaResponseDTO> getAllPessoas(){
+    public List<AdminPessoaResponseDTO> getAllPessoas(){
         List<Pessoa> pessoas = pessoaRepository.findAll();
-        return pessoas.stream().map(PessoaResponseDTO::new).collect(Collectors.toList());
+        return pessoas.stream().map(AdminPessoaResponseDTO::new).collect(Collectors.toList());
     }
 
     //método que retorna uma pessoa por id
-    public PessoaResponseDTO getPessoaById(Long idPessoa){
+    public AdminPessoaResponseDTO getPessoaById(Long idPessoa){
         Pessoa pessoa = findPessoa(idPessoa);
 
-        return new PessoaResponseDTO(pessoa);
+        return new AdminPessoaResponseDTO(pessoa);
     }
 
     //método qeu adiciona uma nova pessoa
-    public PessoaResponseDTO createPessoa(AdminPessoaRequestDTO pessoaRequestDTO){
-        if(pessoaRepository.findByEmail(pessoaRequestDTO.email()) != null ){
+    public AdminPessoaResponseDTO createPessoa(AdminPessoaRequestDTO adminPessoaRequestDTO){
+        if(pessoaRepository.findByEmail(adminPessoaRequestDTO.email()) != null ){
             throw new InvalidRegisterException();
         }else{
-            Pessoa pessoa = new Pessoa(pessoaRequestDTO);
+            Pessoa pessoa = new Pessoa(adminPessoaRequestDTO);
             
             //senha padrão
 
@@ -60,35 +59,30 @@ public class PessoaService {
             pessoa.setUf(cepResponseDTO.uf());
             pessoa.setLocalidade(cepResponseDTO.localidade());
             pessoaRepository.save(pessoa);
-            return new PessoaResponseDTO(pessoa);
+            return new AdminPessoaResponseDTO(pessoa);
         }
     }
 
     //método que atualiza as informações de uma pessoa
-    public PessoaResponseDTO updatePessoa(PessoaRequestDTO pessoaRequestDTO, Long idPessoa){
+    public AdminPessoaResponseDTO updatePessoa(AdminPessoaRequestDTO adminPessoaRequestDTO, Long idPessoa){
         Pessoa pessoa = findPessoa(idPessoa);
 
 
-        pessoa.setName(pessoaRequestDTO.name());
-        pessoa.setCpf(pessoaRequestDTO.cpf());
+        pessoa.setName(adminPessoaRequestDTO.name());
+        pessoa.setCpf(adminPessoaRequestDTO.cpf());
 
-        pessoa.setCep(pessoaRequestDTO.cep());
+        pessoa.setCep(adminPessoaRequestDTO.cep());
         CepResponseDTO cepResponseDTO = cepService.consultaCep(pessoa.getCep());
         pessoa.setLogradouro(cepResponseDTO.logradouro());
         pessoa.setBairro(cepResponseDTO.bairro());
         pessoa.setComplemento(cepResponseDTO.complemento());
         pessoa.setUf(cepResponseDTO.uf());            
         pessoa.setLocalidade(cepResponseDTO.localidade());
-
-        pessoa.setEmail(pessoaRequestDTO.email());
-
-        pessoa.setSenha(pessoaRequestDTO.senha());
-        String encryptedPassword = new BCryptPasswordEncoder().encode(pessoaRequestDTO.senha());
-        pessoa.setSenha(encryptedPassword);
+        pessoa.setEmail(adminPessoaRequestDTO.email());
 
         pessoaRepository.save(pessoa);
 
-        return new PessoaResponseDTO(pessoa);
+        return new AdminPessoaResponseDTO(pessoa);
     }
 
     //método que deleta uma pessoa

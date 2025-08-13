@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import emakersProjetoBackEnd.exceptions.RestErrorMessage;
 import emakersProjetoBackEnd.exceptions.authentication.InvalidLoginException;
 import emakersProjetoBackEnd.exceptions.authentication.InvalidRegisterException;
+import emakersProjetoBackEnd.exceptions.authentication.InvalidTokenException;
 import emakersProjetoBackEnd.exceptions.emprestimo.DevolucaoInvalidaException;
 import emakersProjetoBackEnd.exceptions.emprestimo.LivroEmprestadoException;
 
@@ -61,12 +62,22 @@ public class GeneralExceptionHandler {
         return ResponseEntity.status(errorMessage.status()).body(errorMessage);
     }
 
-    //exceção de deolução não realizada
+    //exceção de devolução não realizada
     @ExceptionHandler(DevolucaoInvalidaException.class)
-    private ResponseEntity<RestErrorMessage> livroEmprestadoHandler(DevolucaoInvalidaException exception) {
+    private ResponseEntity<RestErrorMessage> invaliDevolucaoHandler(DevolucaoInvalidaException exception) {
         RestErrorMessage errorMessage = new RestErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
 
         return ResponseEntity.status(errorMessage.status()).body(errorMessage);
     }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    private ResponseEntity<RestErrorMessage> InvalidTokenHandler(InvalidTokenException exception) {
+        RestErrorMessage errorMessage = new RestErrorMessage(HttpStatus.FORBIDDEN, exception.getMessage());
+
+        return ResponseEntity.status(errorMessage.status()).body(errorMessage);
+    }
+
+    
+
 
 }

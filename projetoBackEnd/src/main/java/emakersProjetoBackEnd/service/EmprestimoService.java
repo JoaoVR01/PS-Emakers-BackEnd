@@ -1,6 +1,7 @@
 package emakersProjetoBackEnd.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -91,6 +92,21 @@ public class EmprestimoService {
         }
         
     }
+
+    //ver os emprestimos da propria conta
+    public List<EmprestimoResponseDTO> privateGetAllEmprestimos(){
+        List<Emprestimo> todosEmprestimos = emprestimoRepository.findByStatusTrue();
+        Pessoa pessoa = pessoaData();
+        List<Emprestimo> privateEmprestimos = new ArrayList<>();
+        for(Emprestimo emprestimo : todosEmprestimos){
+            if(emprestimo.getPessoa().getIdPessoa().equals(pessoa.getIdPessoa())){
+                privateEmprestimos.add(emprestimo);
+            }
+        }
+        return privateEmprestimos.stream().map(EmprestimoResponseDTO::new).collect(Collectors.toList());
+    }
+
+
 
     //metodo para encontra um livro por id a partir do emprestimoRequestDTO
     private Livro findLivroById(EmprestimoRequestDTO emprestimoRequestDTO){

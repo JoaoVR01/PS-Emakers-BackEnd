@@ -8,7 +8,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import emakersProjetoBackEnd.repository.PessoaRepository;
 import emakersProjetoBackEnd.service.TokenService;
 import jakarta.servlet.FilterChain;

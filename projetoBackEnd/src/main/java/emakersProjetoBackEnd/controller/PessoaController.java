@@ -13,10 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import emakersProjetoBackEnd.data.dto.request.AdminPessoaRequestDTO;
-import emakersProjetoBackEnd.data.dto.request.PessoaRequestDTO;
-import emakersProjetoBackEnd.data.dto.response.PessoaResponseDTO;
+import emakersProjetoBackEnd.data.dto.response.AdminPessoaResponseDTO;
 import emakersProjetoBackEnd.service.PessoaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -44,7 +42,7 @@ public class PessoaController {
         @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
     @GetMapping(value = "/getall")
-    public ResponseEntity<List<PessoaResponseDTO>> getAllPessoas(){
+    public ResponseEntity<List<AdminPessoaResponseDTO>> getAllPessoas(){
 
         return ResponseEntity.status(HttpStatus.OK).body(pessoaService.getAllPessoas());
     }
@@ -56,7 +54,7 @@ public class PessoaController {
         @ApiResponse(responseCode = "404", description = "Entidade não encontrada com id: {idPessoa}")
     })
     @GetMapping(value = "/{idPessoa}")
-    public ResponseEntity<PessoaResponseDTO> getLivroById(
+    public ResponseEntity<AdminPessoaResponseDTO> getLivroById(
         @Parameter(description = "ID da pessoa a ser buscada", example = "1")
         @PathVariable Long idPessoa) {
 
@@ -70,7 +68,7 @@ public class PessoaController {
         @ApiResponse(responseCode = "404", description = "Dados fora das expressões regulares")
     })
     @PostMapping(value = "/create")
-    public ResponseEntity<PessoaResponseDTO> createLivro(
+    public ResponseEntity<AdminPessoaResponseDTO> createLivro(
         @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados da pessoa", required = true)
         @Valid @RequestBody AdminPessoaRequestDTO pessoaRequestDTO) {
 
@@ -86,13 +84,13 @@ public class PessoaController {
         @ApiResponse(responseCode = "404", description = "Entidade não encontrada com id: {idPessoa}")
     })
     @PutMapping(value = "/update/{idPessoa}")
-    public ResponseEntity<PessoaResponseDTO> updateLivro(
+    public ResponseEntity<AdminPessoaResponseDTO> updateLivro(
         @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados da pessoa", required = true)
-        @Valid @RequestBody PessoaRequestDTO pessoaRequestDTO, 
+        @Valid @RequestBody AdminPessoaRequestDTO adminPessoaRequestDTO, 
         @Parameter(description = "ID da pessoa a ser buscada", example = "1")
         @PathVariable Long idPessoa) {
 
-        return ResponseEntity.status(HttpStatus.OK).body(pessoaService.updatePessoa(pessoaRequestDTO, idPessoa));
+        return ResponseEntity.status(HttpStatus.OK).body(pessoaService.updatePessoa(adminPessoaRequestDTO, idPessoa));
     }
 
     //deleta uma pessoa por id

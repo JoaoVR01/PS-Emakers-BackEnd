@@ -75,4 +75,14 @@ public class EmprestimoController {
     public ResponseEntity<EmprestimoResponseDTO> devolver(@RequestBody EmprestimoRequestDTO emprestimoRequestDTO){
         return ResponseEntity.status(HttpStatus.OK).body(emprestimoService.devolver(emprestimoRequestDTO));
     }
+
+    @Operation(summary = "Lista todos os emprestimos do usuario logado")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Empréstimos listados com sucesso"),
+        @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    })
+    @GetMapping("/privateEmprestimos")
+    public ResponseEntity<List<EmprestimoResponseDTO>> privateGetAllEmpréstimos() {
+        return ResponseEntity.status(HttpStatus.OK).body(emprestimoService.privateGetAllEmprestimos());
+    }
 }
