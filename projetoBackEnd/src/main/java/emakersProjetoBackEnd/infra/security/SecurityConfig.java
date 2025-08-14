@@ -45,6 +45,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET,"/emprestimo/allEmprestimos").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET,"/emprestimo/allDevoluções").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/emprestimo/privateEmprestimos").hasRole("USER")
+                .requestMatchers("/password/**").hasRole("USER")
             )
             //retorna os dados do usuario e permite que o spring Security acesse esses dados
             .userDetailsService(authorizationService)

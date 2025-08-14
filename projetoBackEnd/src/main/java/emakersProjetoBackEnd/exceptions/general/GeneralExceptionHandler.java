@@ -8,13 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
 import emakersProjetoBackEnd.exceptions.RestErrorMessage;
 import emakersProjetoBackEnd.exceptions.authentication.InvalidLoginException;
 import emakersProjetoBackEnd.exceptions.authentication.InvalidRegisterException;
-import emakersProjetoBackEnd.exceptions.authentication.InvalidTokenException;
+import emakersProjetoBackEnd.exceptions.cep.InvalidCepException;
 import emakersProjetoBackEnd.exceptions.emprestimo.DevolucaoInvalidaException;
 import emakersProjetoBackEnd.exceptions.emprestimo.LivroEmprestadoException;
+import emakersProjetoBackEnd.exceptions.password.EqualOldPasswordException;
+import emakersProjetoBackEnd.exceptions.password.InvalidPasswordException;
 
 @ControllerAdvice
 public class GeneralExceptionHandler {
@@ -70,14 +71,30 @@ public class GeneralExceptionHandler {
         return ResponseEntity.status(errorMessage.status()).body(errorMessage);
     }
 
-    @ExceptionHandler(InvalidTokenException.class)
-    private ResponseEntity<RestErrorMessage> InvalidTokenHandler(InvalidTokenException exception) {
-        RestErrorMessage errorMessage = new RestErrorMessage(HttpStatus.FORBIDDEN, exception.getMessage());
+    //excessão de cep inválido
+    @ExceptionHandler(InvalidCepException.class)
+    private ResponseEntity<RestErrorMessage> invalidCepHandler(InvalidCepException exception) {
+        RestErrorMessage errorMessage = new RestErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
 
         return ResponseEntity.status(errorMessage.status()).body(errorMessage);
     }
 
-    
+    //exceção de senha diferente da pessoa logada
+    @ExceptionHandler(InvalidPasswordException.class)
+    private ResponseEntity<RestErrorMessage> invalidPasswordHandler(InvalidPasswordException exception) {
+        RestErrorMessage errorMessage = new RestErrorMessage(HttpStatus.NOT_FOUND, exception.getMessage());
+
+        return ResponseEntity.status(errorMessage.status()).body(errorMessage);
+    }
+
+    //exceção de nova senha igual a antiga
+    @ExceptionHandler(EqualOldPasswordException.class)
+    private ResponseEntity<RestErrorMessage> equalsOldpasswordHandler(EqualOldPasswordException exception) {
+        RestErrorMessage errorMessage = new RestErrorMessage(HttpStatus.CONFLICT, exception.getMessage());
+
+        return ResponseEntity.status(errorMessage.status()).body(errorMessage);
+    }
+
 
 
 }

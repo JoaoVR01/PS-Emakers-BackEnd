@@ -39,7 +39,8 @@ public class LivroController {
     @Operation(summary = "Lista todos os livros disponíveis")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Livros listados com sucesso"),
-        @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+        @ApiResponse(responseCode = "500", description = "Erro interno do servidor"),
+        @ApiResponse(responseCode = "403", description = "Token inválido ou cargo sem altorização")
     })
     @GetMapping(value = "/getall")
     public ResponseEntity<List<LivroResponseDTO>> getAllLivros(){
@@ -50,7 +51,8 @@ public class LivroController {
     @Operation(summary = "Busca um livro por ID")
      @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Livro encontrado"),
-        @ApiResponse(responseCode = "404", description = "Entidade não encontrada com id: {idLivro}")
+        @ApiResponse(responseCode = "404", description = "Entidade não encontrada com id: {idLivro}"),
+        @ApiResponse(responseCode = "403", description = "Token inválido ou cargo sem altorização")
     })
     @GetMapping(value = "/{idLivro}")
     public ResponseEntity<LivroResponseDTO> getLivroById( 
@@ -64,7 +66,8 @@ public class LivroController {
     @Operation(summary = "Cadastra um novo livro")
      @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Livro criado com sucesso"),
-        @ApiResponse(responseCode = "404", description = "Dados fora das expressões regulares")
+        @ApiResponse(responseCode = "404", description = "Dados fora das expressões regulares"),
+        @ApiResponse(responseCode = "403", description = "Token inválido ou cargo sem altorização")
     })
     @PostMapping(value = "/create")
     public ResponseEntity<LivroResponseDTO> createLivro(
@@ -79,7 +82,8 @@ public class LivroController {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Livro atualizado com sucesso"),
         @ApiResponse(responseCode = "400", description = "Dados fora das expressões regulares"),
-        @ApiResponse(responseCode = "404", description = "Entidade não encontrada com id: {idLivro}")
+        @ApiResponse(responseCode = "404", description = "Entidade não encontrada com id: {idLivro}"),
+        @ApiResponse(responseCode = "403", description = "Token inválido ou cargo sem altorização")
     })
     @PutMapping(value = "/update/{idLivro}")
     public ResponseEntity<LivroResponseDTO> updateLivro(
@@ -95,7 +99,8 @@ public class LivroController {
     @Operation(summary = "Deleta um livro por ID")
      @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Livro encontrado"),
-        @ApiResponse(responseCode = "404", description = "Entidade não encontrada com id: {idLivro}")
+        @ApiResponse(responseCode = "404", description = "Entidade não encontrada com id: {idLivro}"),
+        @ApiResponse(responseCode = "403", description = "Token inválido ou cargo sem altorização")
     })
     @DeleteMapping(value = "/delete/{idLivro}")
     public ResponseEntity<String> deleteLivro(

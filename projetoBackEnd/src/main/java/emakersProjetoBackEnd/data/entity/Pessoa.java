@@ -22,19 +22,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/*
- * TABELA A SER CRIADA:
- * 
- * Pessoa
- * idPessoa int
- * nome varcher(100)
- * cpf char(11)
- * cep char(9)
- * email varchar(100)
- * senha varchar(100)
- * 
- */
-
 //Comandos responsáveis por criar os campos e os métodos para acessar as instâncias da classe
 @Getter
 @Setter

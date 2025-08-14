@@ -39,7 +39,8 @@ public class PessoaController {
     @Operation(summary = "Lista todos as pessoas do banco de Dados")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Pessoas listadas com sucesso"),
-        @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+        @ApiResponse(responseCode = "500", description = "Erro interno do servidor"),
+        @ApiResponse(responseCode = "403", description = "Token inválido ou cargo sem altorização")
     })
     @GetMapping(value = "/getall")
     public ResponseEntity<List<AdminPessoaResponseDTO>> getAllPessoas(){
@@ -51,7 +52,8 @@ public class PessoaController {
     @Operation(summary = "Busca uma pessoa por ID")
      @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Pessoa encontrado"),
-        @ApiResponse(responseCode = "404", description = "Entidade não encontrada com id: {idPessoa}")
+        @ApiResponse(responseCode = "404", description = "Entidade não encontrada com id: {idPessoa}"),
+        @ApiResponse(responseCode = "403", description = "Token inválido ou cargo sem altorização")
     })
     @GetMapping(value = "/{idPessoa}")
     public ResponseEntity<AdminPessoaResponseDTO> getLivroById(
@@ -65,7 +67,8 @@ public class PessoaController {
     @Operation(summary = "Cadastra um novo livro")
      @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Livro criado com sucesso"),
-        @ApiResponse(responseCode = "404", description = "Dados fora das expressões regulares")
+        @ApiResponse(responseCode = "404", description = "Dados fora das expressões regulares"),
+        @ApiResponse(responseCode = "403", description = "Token inválido ou cargo sem altorização")
     })
     @PostMapping(value = "/create")
     public ResponseEntity<AdminPessoaResponseDTO> createLivro(
@@ -81,7 +84,8 @@ public class PessoaController {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Pessoa atualizada com sucesso"),
         @ApiResponse(responseCode = "400", description = "Dados fora das expressões regulares"),
-        @ApiResponse(responseCode = "404", description = "Entidade não encontrada com id: {idPessoa}")
+        @ApiResponse(responseCode = "404", description = "Entidade não encontrada com id: {idPessoa}"),
+        @ApiResponse(responseCode = "403", description = "Token inválido ou cargo sem altorização")
     })
     @PutMapping(value = "/update/{idPessoa}")
     public ResponseEntity<AdminPessoaResponseDTO> updateLivro(
@@ -97,7 +101,8 @@ public class PessoaController {
     @Operation(summary = "Deleta uma pessoa por ID")
      @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Pessoa encontrada"),
-        @ApiResponse(responseCode = "404", description = "Entidade não encontrada com id: {idLivro}")
+        @ApiResponse(responseCode = "404", description = "Entidade não encontrada com id: {idLivro}"),
+        @ApiResponse(responseCode = "403", description = "Token inválido ou cargo sem altorização")
     })
     @DeleteMapping(value = "/delete/{idPessoa}")
     public ResponseEntity<String> deleteLivro(

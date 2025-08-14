@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import emakersProjetoBackEnd.data.dto.request.EmprestimoRequestDTO;
 import emakersProjetoBackEnd.data.dto.response.EmprestimoResponseDTO;
 import emakersProjetoBackEnd.service.EmprestimoService;
@@ -18,6 +17,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/emprestimo")
@@ -31,7 +31,8 @@ public class EmprestimoController {
     @Operation(summary = "Lista todos os empréstimos ativos")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Empréstimos listados com sucesso"),
-        @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+        @ApiResponse(responseCode = "500", description = "Erro interno do servidor"),
+        @ApiResponse(responseCode = "403", description = "Token inválido ou cargo sem altorização")
     })
     @GetMapping("/allEmprestimos")
     public ResponseEntity<List<EmprestimoResponseDTO>> getAllEmprestimos(){
@@ -42,7 +43,8 @@ public class EmprestimoController {
     @Operation(summary = "Lista todas os devoluções realizadas")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Devoluções listadas com sucesso"),
-        @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+        @ApiResponse(responseCode = "500", description = "Erro interno do servidor"),
+        @ApiResponse(responseCode = "403", description = "Token inválido ou cargo sem altorização")
     })
     @GetMapping("/allDevoluções")
     public ResponseEntity<List<EmprestimoResponseDTO>> getAllDevolucoes(){
@@ -54,7 +56,8 @@ public class EmprestimoController {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Emprestimo realizado com sucesso"),
         @ApiResponse(responseCode = "409", description = "Livro emprestado"),
-        @ApiResponse(responseCode = "404", description = "Entidade não encontrada com id: {idLivro}")
+        @ApiResponse(responseCode = "404", description = "Entidade não encontrada com id: {idLivro}"),
+        @ApiResponse(responseCode = "403", description = "Token inválido ou cargo sem altorização")
     })
     @PostMapping("/emprestar")
     public ResponseEntity<EmprestimoResponseDTO> emprestar(
@@ -69,17 +72,19 @@ public class EmprestimoController {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Emprestimo realizado com sucesso"),
         @ApiResponse(responseCode = "400", description = "Nenhum emprestimo do livro feito pelo usuario"),
-        @ApiResponse(responseCode = "404", description = "Entidade não encontrada com id: {idLivro}")
+        @ApiResponse(responseCode = "404", description = "Entidade não encontrada com id: {idLivro}"),
+        @ApiResponse(responseCode = "403", description = "Token inválido ou cargo sem altorização")
     })
     @PostMapping("/devolver")
-    public ResponseEntity<EmprestimoResponseDTO> devolver(@RequestBody EmprestimoRequestDTO emprestimoRequestDTO){
+    public ResponseEntity<EmprestimoResponseDTO> devolver(@Valid @RequestBody EmprestimoRequestDTO emprestimoRequestDTO){
         return ResponseEntity.status(HttpStatus.OK).body(emprestimoService.devolver(emprestimoRequestDTO));
     }
 
     @Operation(summary = "Lista todos os emprestimos do usuario logado")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Empréstimos listados com sucesso"),
-        @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+        @ApiResponse(responseCode = "500", description = "Erro interno do servidor"),
+        @ApiResponse(responseCode = "403", description = "Token inválido ou cargo sem altorização")
     })
     @GetMapping("/privateEmprestimos")
     public ResponseEntity<List<EmprestimoResponseDTO>> privateGetAllEmpréstimos() {

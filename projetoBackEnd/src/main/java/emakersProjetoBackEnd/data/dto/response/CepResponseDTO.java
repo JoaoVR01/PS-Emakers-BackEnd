@@ -12,7 +12,9 @@ public record CepResponseDTO(
 
     String localidade,
 
-    String uf
+    String uf,
+
+    boolean erro
 ) {
 
 }
