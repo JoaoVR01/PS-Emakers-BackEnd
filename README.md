@@ -53,6 +53,67 @@ Incluem:
 - dataDevolucao
 - status (boolean)
 
+<img width="992" height="633" alt="Captura de tela 2025-08-15 171243" src="https://github.com/user-attachments/assets/90852b41-c09c-4d67-b338-5d651b4e9889" />
+
+#### Query PostgresSQL
+```bash
+BEGIN;
+
+
+CREATE TABLE IF NOT EXISTS public.livro
+(
+    id_livro bigserial NOT NULL,
+    autor character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    "data_lançamento" date NOT NULL,
+    name character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT livro_pkey PRIMARY KEY (id_livro)
+);
+
+CREATE TABLE IF NOT EXISTS public.emprestimo
+(
+    id_emprestimo bigserial NOT NULL,
+    data_devolucao date,
+    data_emprestimo date,
+    status boolean,
+    id_livro bigint,
+    id_pessoa bigint,
+    CONSTRAINT emprestimo_pkey PRIMARY KEY (id_emprestimo)
+);
+
+CREATE TABLE IF NOT EXISTS public.pessoa
+(
+    id_pessoa bigserial NOT NULL,
+    bairro character varying(100) COLLATE pg_catalog."default",
+    cep character varying(9) COLLATE pg_catalog."default" NOT NULL,
+    complemento character varying(100) COLLATE pg_catalog."default",
+    cpf character varying(11) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    localidade character varying(100) COLLATE pg_catalog."default",
+    logradouro character varying(100) COLLATE pg_catalog."default",
+    name character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    role character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    senha character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    uf character varying(100) COLLATE pg_catalog."default",
+    CONSTRAINT pessoa_pkey PRIMARY KEY (id_pessoa),
+    CONSTRAINT uk_nlwiu48rutiltbnjle59krljo UNIQUE (cpf)
+);
+
+ALTER TABLE IF EXISTS public.emprestimo
+    ADD CONSTRAINT fk9o80s7i3wn6ks727ytgmudti4 FOREIGN KEY (id_livro)
+    REFERENCES public.livro (id_livro) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public.emprestimo
+    ADD CONSTRAINT fkeujhum1ufew05uykqc54c9dg FOREIGN KEY (id_pessoa)
+    REFERENCES public.pessoa (id_pessoa) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+END;
+```
+
 ## Repositórios
 - **PessoaRepository**
 - **LivroRepository**
@@ -99,6 +160,8 @@ Acesse:
 - http://localhost:8080/swagger-ui.html
 - http://localhost:8080/swagger-ui/index.html
 
+<img width="1192" height="738" alt="Captura de tela 2025-08-15 170800" src="https://github.com/user-attachments/assets/bff523b7-2d85-48fd-b0dc-5b5d07a6a307" />
+
 ## Como executar
 ### Pré-requisitos
 - JDK 17+
@@ -115,6 +178,9 @@ mvn spring-boot:run
 Acesse Swagger em `http://localhost:8080/swagger-ui.html`.
 
 ## Tutorial Insomnia
+
+<img width="1346" height="713" alt="Captura de tela 2025-08-15 170854" src="https://github.com/user-attachments/assets/4d161ab2-7f96-4d74-9586-d6da5f2bf07c" />
+
 1. **Registrar** (`POST /auth/register`)
 ```json
 {
