@@ -1,132 +1,159 @@
-# PS‑Emakers‑BackEnd — API de Biblioteca
+# PS-Emakers-BackEnd – API de Biblioteca
 
-API REST em **Spring Boot 3** para gerenciar **livros**, **pessoas (usuários)** e **empréstimos**, com **autenticação JWT**, documentação **Swagger/OpenAPI** e persistência em **PostgreSQL**.
+## Visão geral
+PS-Emakers-BackEnd é uma aplicação RESTful escrita em Java com Spring Boot. Ela expõe uma API que permite gerenciar livros, usuários (pessoas) e empréstimos de uma biblioteca. O código é organizado em módulos MVC (controllers, services, repositories e entidades) e utiliza autenticação baseada em JWT. As principais dependências encontram-se no pom.xml, como Spring Boot starters (web, JPA, validação), driver do PostgreSQL, segurança, Lombok, biblioteca de tokens JWT e a integração com Swagger para documentação.
 
-> **Swagger**: `http://localhost:8080/swagger-ui/index.html`  
-> **Versão Java**: 17+ (recomendado 17)  
-> **Build**: Maven  
-> **Banco**: PostgreSQL
-
----
-
-## Sumário
-- [Arquitetura & Stack](#arquitetura--stack)
-- [Estrutura do Projeto](#estrutura-do-projeto)
-- [Modelo de Dados (ER)](#modelo-de-dados-er)
-- [Validações & DTOs](#validações--dtos)
-- [Repositórios (JPA)](#repositórios-jpa)
-- [Serviços (Regras de Negócio)](#serviços-regras-de-negócio)
-- [Controllers & Endpoints](#controllers--endpoints)
-  - [Autenticação (`/auth`)](#autenticação-auth)
-  - [Pessoas (`/pessoa`)](#pessoas-pessoa)
-  - [Livros (`/livro`)](#livros-livro)
-  - [Empréstimos (`/emprestimo`)](#empréstimos-emprestimo)
-  - [Senha (`/password`)](#senha-password)
-- [Autenticação & Segurança](#autenticação--segurança)
-- [Integração Externa (CEP)](#integração-externa-cep)
-- [Rodando o Projeto](#rodando-o-projeto)
-  - [Configuração do `application.properties`](#configuração-do-applicationproperties)
-  - [Executando com Maven](#executando-com-maven)
-- [Testando com Insomnia](#testando-com-insomnia)
-- [Usando no Swagger](#usando-no-swagger)
-- [Tratamento de Erros](#tratamento-de-erros)
-- [Dicas úteis](#dicas-úteis)
-
----
-
-## Arquitetura & Stack
-- **Spring Boot 3 (Maven)**
-- **Spring Web** (controllers REST)
-- **Spring Data JPA** (repositórios e persistência)
-- **Spring Security + JWT**
-- **Bean Validation (Jakarta Validation)**
-- **OpenAPI/Swagger** (springdoc-openapi)
-- **PostgreSQL** (driver oficial)
-- **Lombok** (getters/setters/builders)
-- **Devtools** (hot reload em dev)
-
----
-
-## Estrutura do Projeto
-
-projetoBackEnd/
-├─ src/
-│ ├─ main/
-│ │ ├─ java/emakersProjetoBackEnd/
-│ │ │ ├─ Start.java
-│ │ │ ├─ config/
-│ │ │ │ └─ SwaggerConfig.java
-│ │ │ ├─ controller/
-│ │ │ │ ├─ AuthenticationController.java
-│ │ │ │ ├─ PessoaController.java
-│ │ │ │ ├─ LivroController.java
-│ │ │ │ ├─ EmprestimoController.java
-│ │ │ │ └─ ChangePasswordController.java
-│ │ │ ├─ data/
-│ │ │ │ ├─ dto/
-│ │ │ │ │ ├─ request/
-│ │ │ │ │ │ ├─ LoginRequestDTO.java
-│ │ │ │ │ │ ├─ PessoaRequestDTO.java
-│ │ │ │ │ │ ├─ AdminPessoaRequestDTO.java
-│ │ │ │ │ │ ├─ LivroRequestDTO.java
-│ │ │ │ │ │ ├─ EmprestimoRequestDTO.java
-│ │ │ │ │ │ └─ ChangePasswordRequestDTO.java
-│ │ │ │ │ └─ response/
-│ │ │ │ │ ├─ LoginResponseDTO.java
-│ │ │ │ │ ├─ PessoaResponseDTO.java
-│ │ │ │ │ ├─ AdminPessoaResponseDTO.java
-│ │ │ │ │ ├─ LivroResponseDTO.java
-│ │ │ │ │ ├─ EmprestimoResponseDTO.java
-│ │ │ │ │ └─ CepResponseDTO.java
-│ │ │ │ └─ entity/
-│ │ │ │ ├─ Pessoa.java
-│ │ │ │ ├─ Livro.java
-│ │ │ │ ├─ Emprestimo.java
-│ │ │ │ └─ Roles.java
-│ │ │ ├─ infra/security/
-│ │ │ │ ├─ SecurityConfig.java
-│ │ │ │ └─ SecurityFilter.java
-│ │ │ ├─ repository/
-│ │ │ │ ├─ PessoaRepository.java
-│ │ │ │ ├─ LivroRepository.java
-│ │ │ │ └─ EmprestimoRepository.java
-│ │ │ └─ service/
-│ │ │ ├─ AuthorizationService.java
-│ │ │ ├─ TokenService.java
-│ │ │ ├─ PessoaService.java
-│ │ │ ├─ LivroService.java
-│ │ │ ├─ EmprestimoService.java
-│ │ │ ├─ ChangePasswordService.java
-│ │ │ └─ CepService.java
-│ │ └─ resources/
-│ │ └─ application.properties
-└─ pom.xml
+## Estrutura do projeto
+A raiz da aplicação (`projetoBackEnd`) contém:
 
 **src/main/java/emakersProjetoBackEnd** – código da aplicação dividido em pacotes:
+- **config** – configura o Swagger/OpenAPI; define a documentação e metadados da API.
+- **controller** – classes REST que mapeiam os endpoints.
+- **data**
+  - **entity** – entidades JPA que representam as tabelas do banco.
+  - **dto/request** e **dto/response** – objetos de transferência usados para receber ou retornar dados.
+- **exceptions** – exceções personalizadas para erros de domínio.
+- **infra/security** – configurações de segurança, filtro JWT e autenticação.
+- **repository** – interfaces do Spring Data JPA para o banco.
+- **service** – lógica de negócios.
 
-**config** – configura o Swagger/OpenAPI; define a documentação e metadados da API.
+**src/main/resources/application.properties** – configurações do banco PostgreSQL, porta e segredo do token.
 
-**controller** – classes REST que mapeiam os endpoints.
+**Start.java** – classe principal que inicializa o Spring Boot.
 
-**data**
-**entity** – entidades JPA que representam as tabelas do banco.
+## Dependências principais
+Incluem:
+- Spring Boot starters (web, JPA, validação, segurança)
+- PostgreSQL driver
+- Lombok
+- com.auth0.jwt
+- springdoc-openapi
 
-**dto/request e dto/response** – objetos de transferência usados para receber ou retornar dados.
+## Modelo de dados
+### Pessoa
+- idPessoa (PK)
+- name
+- cpf (único)
+- cep, logradouro, complemento, bairro, localidade, uf
+- email (único)
+- senha (BCrypt)
+- role (ADMIN ou USER)
 
-**exceptions** – exceções personalizadas para erros de domínio (ex.: livro emprestado, CPF duplicado etc.).
+### Livro
+- idLivro (PK)
+- name
+- autor
+- data_lancamento
 
-**infra/security** – configurações de segurança (SecurityConfig), filtro para validar tokens (SecurityFilter) e providers de autenticação.
+### Emprestimo
+- idEmprestimo (PK)
+- id_pessoa (FK)
+- id_livro (FK)
+- dataEmprestimo
+- dataDevolucao
+- status (boolean)
 
-**repository** – interfaces do Spring Data JPA para interagir com o banco.
+## Repositórios
+- **PessoaRepository**
+- **LivroRepository**
+- **EmprestimoRepository**
 
-**service** – classes de serviço que encapsulam a lógica de negócios.
+## Serviços
+- **PessoaService** – CRUD de pessoas, validações, exclusão condicional.
+- **LivroService** – CRUD de livros, exclusão condicionada a empréstimos.
+- **EmprestimoService** – fluxo de empréstimo e devolução.
+- **ChangePasswordService** – alteração de senha com validação.
+- **CepService** – integração com ViaCEP.
+- **TokenService** – geração e validação JWT.
+- **AuthorizationService** – carregamento de usuário para autenticação.
 
-**src/main/resources/application.properties** – define a configuração do banco e ajustes do Hibernate. A aplicação utiliza PostgreSQL como banco de dados (URL jdbc:postgresql://localhost:5432/api‑emakers com usuário postgres e senha 7854), exibe o SQL gerado e atualiza o esquema automaticamente. O server.port padrão é 8080 e o segredo usado para gerar tokens vem de 
-api.securitytoken.secret.
+## Segurança
+- **SecurityConfig** – define regras de acesso.
+- **SecurityFilter** – valida JWT.
+- **Pessoa** – implementa UserDetails.
 
-**Start.java** – classe principal que inicializa o Spring Boot.
+## Endpoints
+| Endpoint                          | Método | Role   | Descrição |
+|-----------------------------------|--------|--------|-----------|
+| /auth/login                       | POST   | Público| Login |
+| /auth/register                    | POST   | Público| Registro |
+| /livro/getall                      | GET    | ADMIN  | Lista livros |
+| /livro/{idLivro}                   | GET    | ADMIN  | Detalha livro |
+| /livro                             | POST   | ADMIN  | Cria livro |
+| /livro/{idLivro}                   | PUT    | ADMIN  | Atualiza livro |
+| /livro/delete/{idLivro}            | DELETE | ADMIN  | Remove livro |
+| /pessoa/getall                     | GET    | ADMIN  | Lista pessoas |
+| /pessoa/{idPessoa}                 | GET    | ADMIN  | Detalha pessoa |
+| /pessoa                            | POST   | ADMIN  | Cria pessoa |
+| /pessoa/{idPessoa}                 | PUT    | ADMIN  | Atualiza pessoa |
+| /pessoa/{idPessoa}                 | DELETE | ADMIN  | Remove pessoa |
+| /emprestimo/allEmprestimos         | GET    | ADMIN  | Lista ativos |
+| /emprestimo/allDevoluções          | GET    | ADMIN  | Lista devoluções |
+| /emprestimo/emprestar              | POST   | USER   | Empresta livro |
+| /emprestimo/devolver               | POST   | USER   | Devolve livro |
+| /emprestimo/privateEmprestimos     | GET    | USER   | Lista do usuário |
+| /password/changepassword           | POST   | USER   | Troca senha |
 
-## Dependências Principais
-O pom.xml inclui starters do Spring Boot para web, JPA, validação, segurança, Lombok, driver do PostgreSQL e a biblioteca com.auth0.jwt para geração e verificação de tokens. Também usa springdoc-openapi para gerar a interface Swagger.
+## Swagger
+Acesse:
+- http://localhost:8080/swagger-ui.html
+- http://localhost:8080/swagger-ui/index.html
 
-## Modelo de Dados e Banco de Dados
+## Como executar
+### Pré-requisitos
+- JDK 17+
+- Maven ou Maven Wrapper
+- PostgreSQL rodando com banco `api-emakers`
+
+### Passos
+```bash
+git clone https://github.com/JoaoVR01/PS-Emakers-BackEnd.git
+cd PS-Emakers-BackEnd/projetoBackEnd
+mvn clean install
+mvn spring-boot:run
+```
+Acesse Swagger em `http://localhost:8080/swagger-ui.html`.
+
+## Tutorial Insomnia
+1. **Registrar** (`POST /auth/register`)
+```json
+{
+  "name": "Usuário Teste",
+  "cpf": "12345678912",
+  "cep": "30110001",
+  "email": "user@example.com",
+  "senha": "senhaSegura123"
+}
+```
+2. **Login** (`POST /auth/login`)
+```json
+{
+  "email": "user@example.com",
+  "senha": "senhaSegura123"
+}
+```
+3. **Autenticação** – enviar `Authorization: Bearer <token>`.
+4. **Emprestar** (`POST /emprestimo/emprestar`)
+```json
+{
+  "livro": { "idLivro": 1 }
+}
+```
+5. **Devolver** (`POST /emprestimo/devolver`)
+```json
+{
+  "livro": { "idLivro": 1 }
+}
+```
+6. **Alterar senha** (`POST /password/changepassword`)
+```json
+{
+  "senhaAtual": "senhaSegura123",
+  "newSenha": "novaSenha456"
+}
+```
+
+## Considerações finais
+- Sempre enviar JWT no header.
+- ViaCEP preenche endereço automaticamente.
+- Use Swagger para testar e documentar a API.
