@@ -29,12 +29,13 @@ public class ChangePasswordService {
     public String changeSenha(ChangePasswordRequestDTO changePasswordRequestDTO) { 
         Pessoa pessoa = pessoaData();
 
-        
+        //verifica se o hash da senha atual digitada é diferente do da senha no banco de dados
         if(!passwordEncoder.matches(changePasswordRequestDTO.senhaAtual(), pessoa.getSenha())) {
 
             throw new InvalidPasswordException();
         }
         
+        //verifica se a nova senha é igual a senha atual
         if(passwordEncoder.matches(changePasswordRequestDTO.newSenha(), pessoa.getSenha())) {
             throw new EqualOldPasswordException();
         }

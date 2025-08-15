@@ -14,8 +14,10 @@ import emakersProjetoBackEnd.exceptions.authentication.InvalidRegisterException;
 import emakersProjetoBackEnd.exceptions.cep.InvalidCepException;
 import emakersProjetoBackEnd.exceptions.emprestimo.DevolucaoInvalidaException;
 import emakersProjetoBackEnd.exceptions.emprestimo.LivroEmprestadoException;
+import emakersProjetoBackEnd.exceptions.livro.InvalidLivroDeletionException;
 import emakersProjetoBackEnd.exceptions.password.EqualOldPasswordException;
 import emakersProjetoBackEnd.exceptions.password.InvalidPasswordException;
+import emakersProjetoBackEnd.exceptions.pessoas.InvalidPessoaDeletionException;
 
 @ControllerAdvice
 public class GeneralExceptionHandler {
@@ -95,6 +97,20 @@ public class GeneralExceptionHandler {
         return ResponseEntity.status(errorMessage.status()).body(errorMessage);
     }
 
+    //exceção de deletar livro
+    @ExceptionHandler(InvalidLivroDeletionException.class)
+    private ResponseEntity<RestErrorMessage> invalidLIvroDeletionHandler(InvalidLivroDeletionException exception) {
+        RestErrorMessage errorMessage = new RestErrorMessage(HttpStatus.CONFLICT, exception.getMessage());
 
+        return ResponseEntity.status(errorMessage.status()).body(errorMessage);
+    }
+
+    //exceção de deletar pessoa
+    @ExceptionHandler(InvalidPessoaDeletionException.class)
+    private ResponseEntity<RestErrorMessage> invalidPessoaDeletionHandler(InvalidPessoaDeletionException exception) {
+        RestErrorMessage errorMessage = new RestErrorMessage(HttpStatus.CONFLICT, exception.getMessage());
+
+        return ResponseEntity.status(errorMessage.status()).body(errorMessage);
+    }
 
 }

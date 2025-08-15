@@ -2,15 +2,16 @@ package emakersProjetoBackEnd.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import emakersProjetoBackEnd.data.dto.request.LivroRequestDTO;
 import emakersProjetoBackEnd.data.dto.response.LivroResponseDTO;
 import emakersProjetoBackEnd.data.entity.Livro;
 import emakersProjetoBackEnd.exceptions.general.EntityNotFoundException;
+import emakersProjetoBackEnd.exceptions.livro.InvalidLivroDeletionException;
+import emakersProjetoBackEnd.repository.EmprestimoRepository;
 import emakersProjetoBackEnd.repository.LivroRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 //O service encapsula a lógica de negócios da aplicação. Muitas vezes atua como intermediario dos controllers
@@ -18,7 +19,10 @@ import emakersProjetoBackEnd.repository.LivroRepository;
 public class LivroService {
 
     @Autowired
-    private LivroRepository livroRepository; //serve para fazer consultas e alterações no banco de dados de maneira mais simples 
+    private LivroRepository livroRepository; //serve para fazer consultas e alterações no banco de dados de maneira mais simples
+    
+    @Autowired
+    private EmprestimoRepository emprestimoRepository;
 
     //método que retorna todas as categorias
     public List<LivroResponseDTO> getallLivros(){
@@ -53,11 +57,16 @@ public class LivroService {
     }
 
     //método que deleta um livro
+    @Transactional //transação do banco de dados para o metodo
     public String deleteLivro(Long idLivro){
         Livro livro = findLivro(idLivro);
-        livroRepository.delete(livro);
-
-        return "Livro " + idLivro + " has been deleted!";
+        if(emprestimoRepository.existsByLivroAndStatusTrue(livro)){
+            throw new InvalidLivroDeletionException(idLivro);
+        }else{
+            emprestimoRepository.deleteAllByLivroAndStatusFalse(livro);
+            livroRepository.delete(livro);
+            return "Livro " + idLivro + " has been deleted!";
+        }
     }
 
     private Livro findLivro(Long idLivro){

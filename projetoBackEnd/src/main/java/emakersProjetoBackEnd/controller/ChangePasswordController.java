@@ -3,7 +3,7 @@ package emakersProjetoBackEnd.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -119,9 +119,28 @@ public class ChangePasswordController {
                 }
                 
             )),
-        @ApiResponse(responseCode = "409", description = "A nova senha não pode ser igual a atual")
+        @ApiResponse(
+            responseCode = "409", 
+            description = "A nova senha não pode ser igual a atual",
+            content = @Content(
+                mediaType = "aplication/jason",
+                schema = @Schema(implementation = ChangePasswordRequestDTO.class),
+                examples = {
+                    @ExampleObject(
+                        name = "Exemplo códgio 409",
+                        value = """
+                        {
+                            "senhaAtual" : "novasenha",
+                            "newSenha" : "novasenha"
+
+                        }
+                                """
+                    )
+                }
+                
+            ))
     })
-    @GetMapping("/changepassword")
+    @PostMapping("/changepassword")
     public ResponseEntity<String> changePassword(
         @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Senhas", required = true)    
         @Valid @RequestBody ChangePasswordRequestDTO changePasswordRequestDTO) {
