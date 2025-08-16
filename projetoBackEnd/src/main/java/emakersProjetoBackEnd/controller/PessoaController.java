@@ -43,7 +43,7 @@ public class PessoaController {
             responseCode = "200", 
             description = "Pessoas listadas com sucesso",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 200",
@@ -143,7 +143,7 @@ public class PessoaController {
             responseCode = "500", 
             description = "Erro interno do servidor",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 500",
@@ -156,7 +156,7 @@ public class PessoaController {
             responseCode = "403", 
             description = "Token inválido ou cargo sem altorização",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 403",
@@ -179,7 +179,7 @@ public class PessoaController {
             responseCode = "200", 
             description = "Pessoa encontrada",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 200",
@@ -206,7 +206,7 @@ public class PessoaController {
             responseCode = "404", 
             description = "Entidade não encontrada com id: {idPessoa}",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 404",
@@ -224,7 +224,7 @@ public class PessoaController {
             responseCode = "403", 
             description = "Token inválido ou cargo sem altorização",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 403",
@@ -237,7 +237,7 @@ public class PessoaController {
             responseCode = "500", 
             description = "Erro interno do servidor",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 500",
@@ -262,7 +262,7 @@ public class PessoaController {
             responseCode = "201", 
             description = "Pessoa criada com sucesso",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 201",
@@ -290,7 +290,7 @@ public class PessoaController {
             responseCode = "400", 
             description = "Dados fora das expressões regulares",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 400, com Nome fora da expressão regular",
@@ -379,7 +379,7 @@ public class PessoaController {
             responseCode = "201", 
             description = "Pessoa atualizada com sucesso",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 201, com id encontrado no banco de dados",
@@ -407,7 +407,7 @@ public class PessoaController {
             responseCode = "400", 
             description = "Dados fora das expressões regulares",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 400, com Nome fora da expressão regular",
@@ -478,7 +478,7 @@ public class PessoaController {
             responseCode = "404", 
             description = "Entidade não encontrada com id: {idPessoa}",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 404",
@@ -497,7 +497,7 @@ public class PessoaController {
             responseCode = "403", 
             description = "Token inválido ou cargo sem altorização",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 403",
@@ -511,7 +511,7 @@ public class PessoaController {
             responseCode = "500", 
             description = "Erro interno do servidor",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 500",
@@ -552,7 +552,7 @@ public class PessoaController {
             responseCode = "404", 
             description = "Entidade não encontrada com id: {idLivro}",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 403",
@@ -571,7 +571,7 @@ public class PessoaController {
             responseCode = "403", 
             description = "Token inválido ou cargo sem altorização",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 403",
@@ -585,7 +585,7 @@ public class PessoaController {
             responseCode = "500", 
             description = "Erro interno do servidor",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 500",
@@ -599,7 +599,7 @@ public class PessoaController {
             responseCode = "409", 
             description = "Tentativa de deletar pessoa com emprestimo em aberto", 
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 409",

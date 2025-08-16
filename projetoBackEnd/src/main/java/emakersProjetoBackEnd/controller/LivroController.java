@@ -22,6 +22,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.MediaType;
 import jakarta.validation.Valid;
 
 @RestController
@@ -42,7 +43,7 @@ public class LivroController {
             responseCode = "200", 
             description = "Livros listados com sucesso",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 200",
@@ -81,7 +82,7 @@ public class LivroController {
             responseCode = "500", 
             description = "Erro interno do servidor",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 500",
@@ -95,7 +96,7 @@ public class LivroController {
             responseCode = "403", 
             description = "Token inválido ou cargo sem altorização",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 403",
@@ -106,7 +107,7 @@ public class LivroController {
                 
             ))
     })
-    @GetMapping(value = "/getall")
+    @GetMapping(value = "/getall", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<LivroResponseDTO>> getAllLivros(){
         return ResponseEntity.status(HttpStatus.OK).body(livroService.getallLivros());
     }
@@ -118,7 +119,7 @@ public class LivroController {
             responseCode = "200", 
             description = "Livro encontrado",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 200",
@@ -138,7 +139,7 @@ public class LivroController {
             responseCode = "404", 
             description = "Entidade não encontrada com id: {idLivro}",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 404",
@@ -157,7 +158,7 @@ public class LivroController {
             responseCode = "403",
             description = "Token inválido ou cargo sem altorização",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 403",
@@ -171,7 +172,7 @@ public class LivroController {
             responseCode = "500",
             description = "Erro interno do servidor",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 500",
@@ -196,7 +197,7 @@ public class LivroController {
         @ApiResponse(responseCode = "201", 
         description = "Livro criado com sucesso",
         content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 201",
@@ -216,7 +217,7 @@ public class LivroController {
             responseCode = "400", 
             description = "Dados fora das expressões regulares",
              content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 400, com nome fora das expressões padrão",
@@ -263,7 +264,7 @@ public class LivroController {
             responseCode = "403", 
             description = "Token inválido ou cargo sem altorização",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 403",
@@ -276,7 +277,7 @@ public class LivroController {
             responseCode = "500", 
             description = "Erro interno do servidor",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 500",
@@ -301,7 +302,7 @@ public class LivroController {
             responseCode = "201", 
             description = "Livro atualizado com sucesso",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 200",
@@ -321,7 +322,7 @@ public class LivroController {
             responseCode = "400", 
             description = "Dados fora das expressões regulares",
            content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 400, com nome fora das expressões padrão",
@@ -368,7 +369,7 @@ public class LivroController {
             responseCode = "404", 
             description = "Entidade não encontrada com id: {idLivro}",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 404, tentando atualizar o livro com id 10, sendo que não consta no banco de dados",
@@ -387,7 +388,7 @@ public class LivroController {
             responseCode = "403", 
             description = "Token inválido ou cargo sem altorização",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 403",
@@ -402,7 +403,7 @@ public class LivroController {
             responseCode = "500", 
             description = "Erro interno do servidor",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 500",
@@ -444,7 +445,7 @@ public class LivroController {
             responseCode = "404", 
             description = "Entidade não encontrada com id: {idLivro}",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 404",
@@ -463,7 +464,7 @@ public class LivroController {
             responseCode = "403", 
             description = "Token inválido ou cargo sem altorização",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 403",
@@ -478,7 +479,7 @@ public class LivroController {
             responseCode = "500", 
             description = "Erro interno do servidor",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 500",
@@ -493,7 +494,7 @@ public class LivroController {
                 responseCode = "409", 
                 description = "Não é possivel deletar o livro pois ele está emprestado",
                 content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 409",
@@ -510,7 +511,7 @@ public class LivroController {
             ))
     })
 
-    @DeleteMapping(value = "/delete/{idLivro}")
+    @DeleteMapping(value = "/delete/{idLivro}", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> deleteLivro(
     @Parameter(description = "ID do livro a ser deletado", example = "1")    
     @PathVariable Long idLivro){

@@ -35,7 +35,7 @@ public class EmprestimoController {
         @ApiResponse(responseCode = "200", 
         description = "Empréstimos listados com sucesso",
         content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 200, com livro do id 1 dentro do banco de dados e disponivel",
@@ -148,7 +148,7 @@ public class EmprestimoController {
             responseCode = "500", 
             description = "Erro interno do servidor",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 500",
@@ -163,7 +163,7 @@ public class EmprestimoController {
             responseCode = "403", 
             description = "Token inválido ou cargo sem altorização",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 403",
@@ -187,7 +187,7 @@ public class EmprestimoController {
             responseCode = "200", 
             description = "Devoluções listadas com sucesso",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 200",
@@ -251,7 +251,7 @@ public class EmprestimoController {
             responseCode = "500", 
             description = "Erro interno do servidor",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 500",
@@ -266,7 +266,7 @@ public class EmprestimoController {
             responseCode = "403", 
             description = "Token inválido ou cargo sem altorização",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 403",
@@ -290,7 +290,7 @@ public class EmprestimoController {
             responseCode = "200", 
             description = "Emprestimo realizado com sucesso",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 200, com livro do id 1 dentro do banco de dados e disponivel",
@@ -328,7 +328,7 @@ public class EmprestimoController {
             responseCode = "409", 
             description = "Livro já emprestado",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 409, com livro do id 2 dentro do banco de dados e indisponivel",
@@ -347,7 +347,7 @@ public class EmprestimoController {
             responseCode = "404", 
             description = "Entidade não encontrada com id: {idLivro}",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 404, com livro do id 10 que não se encontra no banco de dados e indisponivel",
@@ -366,7 +366,7 @@ public class EmprestimoController {
             responseCode = "403", 
             description = "Token inválido ou cargo sem altorização",
              content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 403",
@@ -381,7 +381,7 @@ public class EmprestimoController {
             responseCode = "500", 
             description = "Erro interno do servidor",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 500",
@@ -408,7 +408,7 @@ public class EmprestimoController {
             responseCode = "200", 
             description = "Devolução realizada com sucesso",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 200, com livro do id 1 se encontra no banco de dados e foi emprestado pelo usuário",
@@ -446,7 +446,7 @@ public class EmprestimoController {
             responseCode = "400", 
             description = "Nenhum emprestimo do livro feito pelo usuario",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 400, com livro do id 10 se encontra no banco de dados porém não foi emprestado pelo usuário",
@@ -465,7 +465,7 @@ public class EmprestimoController {
             responseCode = "404", 
             description = "Entidade não encontrada com id: {idLivro}",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 404, livro com id 10 não foi encontrado no banco de dados",
@@ -484,7 +484,7 @@ public class EmprestimoController {
             responseCode = "403", 
             description = "Token inválido ou cargo sem altorização",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 403",
@@ -498,7 +498,7 @@ public class EmprestimoController {
             responseCode = "500", 
             description = "Erro interno do servidor",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 500",
@@ -521,7 +521,7 @@ public class EmprestimoController {
             responseCode = "200", 
             description = "Empréstimos listados com sucesso",
              content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 200",
@@ -608,7 +608,7 @@ public class EmprestimoController {
             responseCode = "500", 
             description = "Erro interno do servidor",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 500",
@@ -621,7 +621,7 @@ public class EmprestimoController {
             responseCode = "403", 
             description = "Token inválido ou cargo sem altorização",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 403",

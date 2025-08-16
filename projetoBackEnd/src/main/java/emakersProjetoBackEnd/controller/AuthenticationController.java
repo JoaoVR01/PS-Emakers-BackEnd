@@ -69,7 +69,7 @@ public class AuthenticationController {
             responseCode = "401", 
             description = "Email ou senha inválidos",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/jason",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 401, com usuário admin1232@gmail.com não registrado no banco de dados",
@@ -99,7 +99,7 @@ public class AuthenticationController {
             responseCode = "400", 
             description = "Email ou senha fora das expressões regulares",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/jason",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 400, com email fora da expresão regular",
@@ -135,7 +135,7 @@ public class AuthenticationController {
             responseCode = "500", 
             description = "Erro interno do servidor",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/jason",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 500",
@@ -173,7 +173,7 @@ public class AuthenticationController {
             responseCode = "409", 
             description = "Email ou CPF ja encontrado no banco de dados",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 schema = @Schema(implementation = PessoaResponseDTO.class),
                 examples = {
                     @ExampleObject(
@@ -205,7 +205,7 @@ public class AuthenticationController {
             responseCode = "400", 
             description = "Dados fora das exprssões regulares ou CEP inválido",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 schema = @Schema(implementation = PessoaResponseDTO.class),
                 examples = {
                     @ExampleObject(
@@ -291,7 +291,7 @@ public class AuthenticationController {
             responseCode = "500",
             description = "Erro interno do servidor",
             content = @Content(
-                mediaType = "aplication/jason",
+                mediaType = "application/json",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 500",

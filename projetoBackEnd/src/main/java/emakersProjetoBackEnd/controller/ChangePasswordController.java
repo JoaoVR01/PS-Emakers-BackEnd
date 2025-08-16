@@ -12,7 +12,6 @@ import emakersProjetoBackEnd.service.ChangePasswordService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,45 +31,59 @@ public class ChangePasswordController {
             responseCode = "200", 
             description = "Senha Alterada com sucesso", 
             content = @Content(
-                mediaType = "aplication/jason",
-                schema = @Schema(implementation = ChangePasswordRequestDTO.class),
+                mediaType = "text/plain",
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 200",
-                        value = """
-                        {
-                            "senhaAtual" : "senha",
-                            "newSenha" : "novasenha"
-
-                        }
-                                """
+                        value = "Senha alterada com sucesso"
                     )
                 }
                 
             )),
         @ApiResponse(
             responseCode = "500", 
-            description = "Erro interno do servidor"
+            description = "Erro interno do servidor",
+            content = @Content(
+                mediaType = "aplication/jason",
+                examples = {
+                    @ExampleObject(
+                        name = "Exemplo códgio 500",
+                        value = """
+                                """
+                    )
+                }
+                
+            )
         ),
         @ApiResponse(
             responseCode = "403", 
-            description = "Token inválido ou cargo sem altorização"
+            description = "Token inválido ou cargo sem altorização",
+            content = @Content(
+                mediaType = "aplication/jason",
+                examples = {
+                    @ExampleObject(
+                        name = "Exemplo códgio 403",
+                        value = """
+                                """
+                    )
+                }
+                
+            )
             ),
         @ApiResponse(
             responseCode = "404", 
             description = "Senha atual incorreta",
             content = @Content(
                 mediaType = "aplication/jason",
-                schema = @Schema(implementation = ChangePasswordRequestDTO.class),
                 examples = {
                     @ExampleObject(
-                        name = "Exemplo códgio 404 com senha atual sendo \"1234\" ",
+                        name = "Exemplo códgio 404 com senha atual sendo \"111\" ",
                         value = """
                         {
-                            "senhaAtual" : "12345",
-                            "newSenha" : "novasenha"
-
-                        }
+	"status": "NOT_FOUND",
+	"message": "Senha Incorreta!",
+	"timestamp": "2025-08-15T19:58:04.179+00:00"
+}
                                 """
                     )
                 }
@@ -81,38 +94,48 @@ public class ChangePasswordController {
             description = "Senha atual e/ou nova senha em branco",
             content = @Content(
                 mediaType = "aplication/jason",
-                schema = @Schema(implementation = ChangePasswordRequestDTO.class),
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 400 com senhaAtual em branco",
                         value = """
-                        {
-                            "senhaAtual" : "",
-                            "newSenha" : "novasenha"
-
-                        }
+                        [
+	{
+		"status": "BAD_REQUEST",
+		"message": "A senha atual não pode der nula",
+		"timestamp": "2025-08-15T19:56:38.775+00:00"
+	}
+]
                                 """
                     ),
 
                     @ExampleObject(
                         name = "Exemplo códgio 400 com newSenha em branco",
                         value = """
-                        {
-                            "senhaAtual" : "senha",
-                            "newSenha" : ""
-
-                        }
+                        [
+	{
+		"status": "BAD_REQUEST",
+		"message": "A nova senha não pode ser nula",
+		"timestamp": "2025-08-15T19:57:08.185+00:00"
+	}
+]
                                 """
                     ),
 
                     @ExampleObject(
                         name = "Exemplo códgio 400 com ambos os campos em branco",
                         value = """
-                        {
-                            "senhaAtual" : "",
-                            "newSenha" : ""
-
-                        }
+                        [
+	{
+		"status": "BAD_REQUEST",
+		"message": "A senha atual não pode der nula",
+		"timestamp": "2025-08-15T19:57:33.472+00:00"
+	},
+	{
+		"status": "BAD_REQUEST",
+		"message": "A nova senha não pode ser nula",
+		"timestamp": "2025-08-15T19:57:33.472+00:00"
+	}
+]
                                 """
                     ),
 
@@ -124,16 +147,15 @@ public class ChangePasswordController {
             description = "A nova senha não pode ser igual a atual",
             content = @Content(
                 mediaType = "aplication/jason",
-                schema = @Schema(implementation = ChangePasswordRequestDTO.class),
                 examples = {
                     @ExampleObject(
                         name = "Exemplo códgio 409",
                         value = """
                         {
-                            "senhaAtual" : "novasenha",
-                            "newSenha" : "novasenha"
-
-                        }
+	"status": "CONFLICT",
+	"message": "A nova senha não pode ser igual a atual",
+	"timestamp": "2025-08-14T14:36:52.077+00:00"
+}
                                 """
                     )
                 }
